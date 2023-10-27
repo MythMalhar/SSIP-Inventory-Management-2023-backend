@@ -2,8 +2,11 @@ import express from "express";
 import dotenv from "dotenv";
 dotenv.config();
 import db from "./config/dbConfig.js";
+// import routes from "./routes"
 
+db();
 const app = express();
+
 app.use(express.json());
 app.get("/hello", (req, res) => {
   res.send({
