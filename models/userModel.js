@@ -54,11 +54,7 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    orders: {
-      type: Array,
-      required: true,
-      default: [],
-    },
+    orders: [subSchema],
   },
   { timestamps: true }
 );
