@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 dotenv.config();
 import db from "./config/dbConfig.js";
 import userRoutes from "./routes/userRoutes.js";
+import orderRoutes from "./routes/orderRoutes.js";
 import cors from "cors";
 
 db();
@@ -21,6 +22,7 @@ app.use("/hello", (req, res) => {
   });
 });
 app.use("/api/user", userRoutes);
+app.use("/api/order", orderRoutes);
 
 app.listen(process.env.PORT, () => {
   console.log("Server running on port 8080");
