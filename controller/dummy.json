@@ -1,0 +1,24 @@
+[
+{
+    "name": "abc",
+    "email": "abc@gmail.com",
+    "phone": "1256786692",
+    "password": "1",
+    "subBranch": "IT",
+    "Branch": "IT",
+    "Department": "IT",
+    "orders": "",
+    "role": "storeManager"
+},
+{  
+    "name": "pqr",
+    "email": "pqr@gmail.com",
+    "phone": "1254567892",
+    "password": "12",
+    "subBranch": "Mechanical",
+    "Branch": "Mechanical",
+    "Department": "Mechanical",
+    "orders": "",
+    "role": "storeManager"
+}
+]

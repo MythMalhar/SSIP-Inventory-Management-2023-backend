@@ -1,6 +1,8 @@
 import User from "../models/userModel.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import dum from "./dummy.json";
+import auth from "../middleware/authMiddleware.js";
 
 export const registerUser = async (req, res) => {
   try {
@@ -44,6 +46,20 @@ export const loginUser = async (req, res) => {
   } catch (err) {
     res.send({
       success: false,
+      message: err.message,
+    });
+  }
+};
+
+export const userUsers = async (req, res) => {
+  try {
+    const users = await User.find({ role });
+    res.json({
+      users,
+    });
+  } catch (err) {
+    res.send({
+      success: "false",
       message: err.message,
     });
   }
