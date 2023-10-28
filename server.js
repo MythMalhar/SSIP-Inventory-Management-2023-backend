@@ -14,13 +14,13 @@ app.use(
     origin: "*",
   })
 );
-app.get("/hello", (req, res) => {
+app.use("/hello", (req, res) => {
   res.send({
     success: true,
     message: "Hello World this side! The API is working fine.",
   });
 });
-app.get("/api/user", userRoutes);
+app.use("/api/user", userRoutes);
 
 app.listen(process.env.PORT, () => {
   console.log("Server running on port 8080");
