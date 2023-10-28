@@ -57,7 +57,31 @@ export const userUsers = async (req, res) => {
     });
   } catch (err) {
     res.send({
-      success: "false",
+      success: false,
+      message: err.message,
+    });
+  }
+};
+
+export const getCurrentUser = async (req, res) => {
+  try {
+    const { userId } = req.body;
+    const user = await User.findById(userId);
+    delete user.password;
+    if (!user) {
+      res.send({
+        success: true,
+        message: "Error occurred in fetching user.",
+      });
+    }
+    res.send({
+      success: true,
+      message: "User fetched Successfully",
+      user,
+    });
+  } catch (err) {
+    res.send({
+      success: false,
       message: err.message,
     });
   }
