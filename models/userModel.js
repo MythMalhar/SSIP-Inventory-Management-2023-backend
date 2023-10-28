@@ -1,5 +1,27 @@
 import mongoose from "mongoose";
 
+const subSchema = new mongoose.Schema({
+  item: {
+    type: String,
+    required: true,
+  },
+  quantity: {
+    type: Number,
+    required: true,
+  },
+  delivered: {
+    type: Number,
+    required: true,
+  },
+  status: {
+    type: String,
+    required: true,
+  },
+  orderDate: {
+    type: Date,
+  },
+});
+
 const userSchema = new mongoose.Schema(
   {
     name: {
