@@ -5,6 +5,7 @@ import {
   userUsers,
   getCurrentUser,
 } from "../controller/userController.js";
+import authMiddleware from "../middlewares/authMiddleware.js";
 
 const router = Router();
 
@@ -12,6 +13,6 @@ router
   .post("/register", registerUser)
   .post("/login", loginUser)
   .get("/users", userUsers)
-  .get("/", getCurrentUser);
+  .get("/", authMiddleware, getCurrentUser);
 
 export default router;
