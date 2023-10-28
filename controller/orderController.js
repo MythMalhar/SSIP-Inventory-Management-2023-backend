@@ -4,7 +4,7 @@ export const createOrder = async (req, res) => {
   try {
     const { userId } = req.body;
     const user = await User.findById(userId);
-    user.orders.push(...req.body);
+    user.orders.push({ ...req.body });
     await User.findByIdAndUpdate(userId, user);
     res.send({
       success: true,
