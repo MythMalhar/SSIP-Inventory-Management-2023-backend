@@ -4,6 +4,7 @@ dotenv.config();
 import db from "./config/dbConfig.js";
 import userRoutes from "./routes/userRoutes.js";
 import orderRoutes from "./routes/orderRoutes.js";
+import itemRoutes from "./routes/itemRoutes.js";
 import cors from "cors";
 
 db();
@@ -23,6 +24,7 @@ app.use("/hello", (req, res) => {
 });
 app.use("/api/user", userRoutes);
 app.use("/api/order", orderRoutes);
+app.use("/api/admin", itemRoutes);
 
 app.listen(process.env.PORT, () => {
   console.log("Server running on port 8080");
