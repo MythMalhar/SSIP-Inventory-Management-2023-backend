@@ -23,5 +23,5 @@ const itemSchema = new mongoose.Schema({
   },
 });
 
-const item = mongoose.model("items", itemSchema);
-export default item;
+const Item = mongoose.model("items", itemSchema);
+export default Item;

@@ -1,9 +1,10 @@
-import item from "../models/itemModel.js";
+import Item from "../models/itemModel.js";
 
-const addItem = async (req, res) => {
+export const addItem = async (req, res) => {
   try {
     // const items = req.body;
-    item.insertMany(req.body);
+    const item = new Item(req.body);
+    await item.save();
     res.send({
       success: true,
       message: "Item added successfully.",
@@ -15,4 +16,3 @@ const addItem = async (req, res) => {
     });
   }
 };
-export default addItem;
