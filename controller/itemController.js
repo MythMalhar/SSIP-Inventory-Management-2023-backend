@@ -16,3 +16,20 @@ export const addItem = async (req, res) => {
     });
   }
 };
+
+export const getItems = async (req, res) => {
+  try {
+    const items = await Item.find();
+    res.send({
+      success: true,
+      message: "Item added successfully.",
+      items,
+    });
+  } catch (err) {
+    res.send({
+      success: true,
+      message: err.message,
+      items: [],
+    });
+  }
+};

@@ -1,8 +1,8 @@
 import { Router } from "express";
-import { addItem } from "../controller/itemController.js";
+import { addItem, getItems } from "../controller/itemController.js";
 import authMiddleware from "../middlewares/authMiddleware.js";
 const router = Router();
 
-router.post("/", authMiddleware, addItem);
+router.post("/", authMiddleware, addItem).get("/", authMiddleware, getItems);
 
 export default router;
