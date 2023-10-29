@@ -13,6 +13,7 @@ const subSchema = new mongoose.Schema(
     delivered: {
       type: Number,
       required: true,
+      default: 0,
     },
     status: {
       type: String,
