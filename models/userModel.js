@@ -1,6 +1,6 @@
 import mongoose, { Schema } from "mongoose";
 
-const subSchema = new mongoose.Schema(
+const orderSchema = new mongoose.Schema(
   {
     itemId: {
       type: String,
@@ -19,6 +19,20 @@ const subSchema = new mongoose.Schema(
       type: String,
       required: true,
       default: "pending",
+    },
+  },
+  { timestamps: true }
+);
+
+const inventorySchema = new mongoose.Schema(
+  {
+    itemId: {
+      type: String,
+      required: true,
+    },
+    quantity: {
+      type: Number,
+      required: true,
     },
   },
   { timestamps: true }
@@ -59,7 +73,8 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    orders: [subSchema],
+    orders: [orderSchema],
+    inventory: [inventorySchema],
   },
   { timestamps: true }
 );

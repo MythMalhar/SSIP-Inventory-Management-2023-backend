@@ -5,7 +5,7 @@ import {
   userUsers,
   getCurrentUser,
 } from "../controller/userController.js";
-import authMiddleware from "../middlewares/authMiddleware.js";
+import { authMiddleware } from "../middlewares/authMiddleware.js";
 
 const router = Router();
 
