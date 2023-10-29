@@ -26,7 +26,9 @@ export const getItem = async (req, res) => {
   try {
     const item = await Item.find({});
     res.send({
-      item,
+      success: true,
+      message: "Items fetched successfully.",
+      data: item,
     });
   } catch (err) {
     res.send({
