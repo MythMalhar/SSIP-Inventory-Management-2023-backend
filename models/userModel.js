@@ -1,26 +1,27 @@
-import mongoose from "mongoose";
+import mongoose, { Schema } from "mongoose";
 
-const subSchema = new mongoose.Schema({
-  item: {
-    type: String,
-    required: true,
+const subSchema = new mongoose.Schema(
+  {
+    itemId: {
+      type: String,
+      required: true,
+    },
+    quantity: {
+      type: Number,
+      required: true,
+    },
+    delivered: {
+      type: Number,
+      required: true,
+    },
+    status: {
+      type: String,
+      required: true,
+      default: "pending",
+    },
   },
-  quantity: {
-    type: Number,
-    required: true,
-  },
-  delivered: {
-    type: Number,
-    required: true,
-  },
-  status: {
-    type: String,
-    required: true,
-  },
-  orderDate: {
-    type: Date,
-  },
-});
+  { timestamps: true }
+);
 
 const userSchema = new mongoose.Schema(
   {
@@ -43,12 +44,15 @@ const userSchema = new mongoose.Schema(
     },
     subBranch: {
       type: String,
+      required: true,
     },
     branch: {
       type: String,
+      required: true,
     },
     department: {
       type: String,
+      required: true,
     },
     role: {
       type: String,

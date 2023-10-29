@@ -6,6 +6,6 @@ const router = Router();
 
 router
   .post("/", authMiddleware, createOrder)
-  .get("/orders", authMiddleware, fetchAllOrders);
+  .get("/", authMiddleware, fetchAllOrders);
 
 export default router;
