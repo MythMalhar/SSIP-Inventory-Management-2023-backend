@@ -49,16 +49,29 @@ export const loginUser = async (req, res) => {
   }
 };
 
-export const userUsers = async (req, res) => {
+export const getUsers = async (req, res) => {
   try {
-    const users = await User.find({});
-    res.json({
+    const { status, role, branch, subBranch, department } = req.body;
+    const users = await User.find({
+      status,
+      role,
+      branch,
+      subBranch,
+      department,
+    });
+    if (!users) {
+      throw new Error("No users found");
+    }
+    res.send({
+      success: true,
+      message: "Users fetched successfully",
       users,
     });
   } catch (err) {
     res.send({
       success: false,
       message: err.message,
+      users: [],
     });
   }
 };
