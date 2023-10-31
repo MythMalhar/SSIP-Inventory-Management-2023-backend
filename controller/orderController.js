@@ -9,7 +9,14 @@ export const createOrder = async (req, res) => {
     const orders = await Promise.all(
       req.body.map(async (order) => {
         const item = await Item.findById(order.itemId);
-        return { ...order, ...item._doc };
+        return {
+          ...order,
+          name: item.name,
+          description: item.description,
+          company: item.company,
+          category: item.category,
+          imageUrl: item.imageUrl,
+        };
       })
     );
     console.log(orders);

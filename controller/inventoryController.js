@@ -8,7 +8,14 @@ export const addInventory = async (req, res) => {
     const inventoryItems = await Promise.all(
       req.body.map(async (inventoryItem) => {
         const item = await Item.findById(inventoryItem.itemId);
-        return { ...inventoryItem, ...item._doc };
+        return {
+          ...inventoryItem,
+          name: item.name,
+          description: item.description,
+          company: item.company,
+          category: item.category,
+          imageUrl: item.imageUrl,
+        };
       })
     );
     user.inventory.push(...inventoryItems);
