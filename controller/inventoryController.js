@@ -46,17 +46,18 @@ export const getInventory = async (req, res) => {
 
 export const updateInventory = async (req, res) => {
   try {
-    const { userId, newInventoryItem } = req.body;
+    const { userId, updatedQuantity, inventoryId } = req.body;
     const user = await User.findById(userId);
     user.inventory.forEach((inventoryItem, index) => {
-      if (inventoryItem.itemId === newInventoryItem.itemId) {
-        user.inventory[index] = newInventoryItem;
+      if (inventoryItem._id === inventoryId) {
+        user.inventory[index].quantity = updatedQuantity;
       }
     });
     await user.save();
     res.send({
       success: true,
       message: "Inventory item updated successfully.",
+      inventory: user.inventory,
     });
   } catch (err) {
     res.send({
