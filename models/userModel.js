@@ -3,6 +3,26 @@ import mongoose, { Schema } from "mongoose";
 const orderSchema = new mongoose.Schema(
   {
     itemId: {
+      type: mongoose.Schema.ObjectId,
+      required: true,
+    },
+    name: {
+      type: String,
+      required: true,
+    },
+    description: {
+      type: String,
+      required: true,
+    },
+    company: {
+      type: String,
+      required: true,
+    },
+    category: {
+      type: String,
+      required: true,
+    },
+    imageUrl: {
       type: String,
       required: true,
     },
@@ -27,6 +47,26 @@ const orderSchema = new mongoose.Schema(
 const inventorySchema = new mongoose.Schema(
   {
     itemId: {
+      type: mongoose.Schema.ObjectId,
+      required: true,
+    },
+    name: {
+      type: String,
+      required: true,
+    },
+    description: {
+      type: String,
+      required: true,
+    },
+    company: {
+      type: String,
+      required: true,
+    },
+    category: {
+      type: String,
+      required: true,
+    },
+    imageUrl: {
       type: String,
       required: true,
     },

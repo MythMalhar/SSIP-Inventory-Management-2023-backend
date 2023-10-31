@@ -4,14 +4,19 @@ import Item from "../models/itemModel.js";
 export const addInventory = async (req, res) => {
   try {
     const { userId } = req.body;
-    // console.log(req.body);
     const user = await User.findById(userId);
-    user.inventory.push(...req.body);
+    const inventoryItems = await Promise.all(
+      req.body.map(async (inventoryItem) => {
+        const item = await Item.findById(inventoryItem.itemId);
+        return { ...inventoryItem, ...item._doc };
+      })
+    );
+    user.inventory.push(...inventoryItems);
     await user.save();
 
     res.send({
       success: true,
-      message: "Item added to inventory successfully.",
+      message: "Items added to inventory successfully.",
     });
   } catch (err) {
     res.send({
@@ -24,18 +29,34 @@ export const addInventory = async (req, res) => {
 export const getInventory = async (req, res) => {
   try {
     const { userId } = req.body;
-    // console.log(req.body);
     const user = await User.findById(userId);
-    let inventoryArray = [];
-    user.inventory.forEach((element) => {
-      if (element.itemId === Item.findById()) {
-        inventoryArray.push(user.orders);
-      }
-    });
     res.send({
       success: true,
-      message: "Inventory items fecthed successfully.",
-      inventory: inventoryArray,
+      message: "Inventory items fetched successfully.",
+      inventory: user.inventory,
+    });
+  } catch (err) {
+    res.send({
+      success: false,
+      message: err.message,
+      inventory: [],
+    });
+  }
+};
+
+export const updateInventory = async (req, res) => {
+  try {
+    const { userId, newInventoryItem } = req.body;
+    const user = await User.findById(userId);
+    user.inventory.forEach((inventoryItem, index) => {
+      if (inventoryItem.itemId === newInventoryItem.itemId) {
+        user.inventory[index] = newInventoryItem;
+      }
+    });
+    await user.save();
+    res.send({
+      success: true,
+      message: "Inventory item updated successfully.",
     });
   } catch (err) {
     res.send({

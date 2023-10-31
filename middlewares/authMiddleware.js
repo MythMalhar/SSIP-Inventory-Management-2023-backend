@@ -38,7 +38,8 @@ export const authMiddlewareManager = async (req, res, next) => {
     const decryptedToken = jwt.verify(token, process.env.JWT_SECRET_KEY);
     req.body.userId = decryptedToken.userId;
     const user = await User.findById(req.body.userId);
-    if (!user.role.includes("manager")) throw new Error("You are not Authorized");
+    if (!user.role.includes("manager"))
+      throw new Error("You are not Authorized");
     next();
   } catch (err) {
     res.send({

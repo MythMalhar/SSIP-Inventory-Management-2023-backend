@@ -26,8 +26,7 @@ app.use("/hello", (req, res) => {
 app.use("/api/user", userRoutes);
 app.use("/api/order", orderRoutes);
 app.use("/api/item", itemRoutes);
-app.use("/api/inventory",inventoryRoutes);
-// app.use("/api/inventory", inventoryRoutes);
+app.use("/api/inventory", inventoryRoutes);
 
 app.listen(process.env.PORT, () => {
   console.log("Server running on port 8080");
