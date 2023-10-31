@@ -49,7 +49,7 @@ export const updateInventory = async (req, res) => {
     const { userId, updatedQuantity, inventoryId } = req.body;
     const user = await User.findById(userId);
     user.inventory.forEach((inventoryItem, index) => {
-      if (inventoryItem._id === inventoryId) {
+      if (inventoryItem._id.toString() === inventoryId) {
         user.inventory[index].quantity = updatedQuantity;
       }
     });
