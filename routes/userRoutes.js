@@ -12,7 +12,7 @@ const router = Router();
 router
   .post("/register", registerUser)
   .post("/login", loginUser)
-  .get("/users", authMiddleware, getUsers)
+  .post("/users", authMiddleware, getUsers)
   .get("/", authMiddleware, getCurrentUser);
 
 export default router;
