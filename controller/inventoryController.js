@@ -7,7 +7,6 @@ export const addInventory = async (req, res) => {
     const user = await User.findById(userId);
     const inventoryItems = await Promise.all(
       req.body.map(async (inventoryItem) => {
-        // console.log(inventoryItem);
         const item = await Item.findById(inventoryItem.itemId);
         let flag = false;
         user.inventory.forEach((x, index) => {
