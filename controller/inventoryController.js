@@ -92,7 +92,7 @@ export const updateInventory = async (req, res) => {
 export const deleteInventory = async (req, res) => {
   try {
     const { userId, inventoryId } = req.body;
-    const user = await User.findOne(userId);
+    const user = await User.findById(userId);
     const updatedInventory = user.inventory.filter((inventoryItem) => {
       inventoryItem._id.toString() !== inventoryId;
     });
