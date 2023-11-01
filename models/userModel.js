@@ -35,6 +35,11 @@ const orderSchema = new mongoose.Schema(
       required: true,
       default: 0,
     },
+    orderType: {
+      type: String,
+      required: true,
+      default: "personal",
+    },
     status: {
       type: String,
       required: true,
