@@ -7,16 +7,19 @@ export const addInventory = async (req, res) => {
     const user = await User.findById(userId);
     const inventoryItems = await Promise.all(
       req.body.map(async (inventoryItem) => {
-        console.log(inventoryItem);
+        // console.log(inventoryItem);
         const item = await Item.findById(inventoryItem.itemId);
+        let flag = false;
         user.inventory.forEach((x, index) => {
-          if (x.itemId === inventoryItem.itemId) {
+          if (x.itemId.toString() === inventoryItem.itemId) {
             user.inventory[index].quantity += inventoryItem.quantity;
-            return {
-              itemId: "duplicate",
-            };
+            flag = true;
           }
         });
+        if (flag === true)
+          return {
+            itemId: "duplicate",
+          };
         return {
           ...inventoryItem,
           name: item.name,
