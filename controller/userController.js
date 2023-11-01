@@ -1,6 +1,7 @@
 import User from "../models/userModel.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import ROLES from "../constants/ROLES.js";
 
 export const registerUser = async (req, res) => {
   try {
@@ -51,14 +52,21 @@ export const loginUser = async (req, res) => {
 
 export const getUsers = async (req, res) => {
   try {
-    const { role, branch, subBranch, department } = req.body;
-    console.log(req.body);
+    let { role, branch, subBranch, department } = req.body;
+    if (role === ROLES.DEPARTMENT_STORE_MANAGER) {
+      role = ROLES.BRANCH_STORE_MANAGER;
+    } else if (role === ROLES.BRANCH_STORE_MANAGER) {
+      role = ROLES.SUB_BRANCH_STORE_MANGER;
+    } else if (role === ROLES.SUB_BRANCH_STORE_MANGER) {
+      role = ROLES.EMPLOYEE;
+    }
     const users = await User.find({
       role,
       branch,
       subBranch,
       department,
     });
+    console.log(users);
     if (!users) {
       throw new Error("No users found");
     }
