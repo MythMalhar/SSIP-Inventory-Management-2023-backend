@@ -1,5 +1,5 @@
-import User from "../models/userModel.js";
-import Item from "../models/itemModel.js";
+import User from '../models/userModel.js';
+import Item from '../models/itemModel.js';
 
 export const addInventory = async (req, res) => {
   try {
@@ -18,7 +18,7 @@ export const addInventory = async (req, res) => {
         });
         if (flag === true)
           return {
-            itemId: "duplicate",
+            itemId: 'duplicate',
           };
         return {
           ...inventoryItem,
@@ -31,14 +31,14 @@ export const addInventory = async (req, res) => {
       })
     );
     const updatedInventoryItem = inventoryItems.filter(
-      (inventoryItem) => inventoryItem.itemId !== "duplicate"
+      (inventoryItem) => inventoryItem.itemId !== 'duplicate'
     );
     user.inventory.push(...updatedInventoryItem);
     await user.save();
 
     res.send({
       success: true,
-      message: "Items added to inventory successfully.",
+      message: 'Items added to inventory successfully.',
     });
   } catch (err) {
     res.send({
@@ -54,7 +54,7 @@ export const getInventory = async (req, res) => {
     const user = await User.findById(userId);
     res.send({
       success: true,
-      message: "Inventory items fetched successfully.",
+      message: 'Inventory items fetched successfully.',
       inventory: user.inventory,
     });
   } catch (err) {
@@ -78,7 +78,7 @@ export const updateInventory = async (req, res) => {
     await user.save();
     res.send({
       success: true,
-      message: "Inventory item updated successfully.",
+      message: 'Inventory item updated successfully.',
       inventory: user.inventory,
     });
   } catch (err) {
@@ -91,13 +91,21 @@ export const updateInventory = async (req, res) => {
 
 export const deleteInventory = async (req, res) => {
   try {
-    const { userId, inventoryId } = req.body;
+    const { userId } = req.body;
+    const { inventoryId } = req.params;
     const user = await User.findById(userId);
-    const updatedInventory = user.inventory.filter((inventoryItem) => {
-      inventoryItem._id.toString() !== inventoryId;
-    });
+
+    const updatedInventory = user.inventory.filter(
+      (inventoryItem) => inventoryItem._id.toString() !== inventoryId
+    );
     user.inventory = updatedInventory;
+
     await user.save();
+
+    res.send({
+      success: true,
+      message: 'deleted successfully',
+    });
   } catch (err) {
     res.send({
       success: false,
