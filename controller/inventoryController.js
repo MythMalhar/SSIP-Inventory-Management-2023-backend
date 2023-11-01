@@ -12,7 +12,7 @@ export const addInventory = async (req, res) => {
         let flag = false;
         user.inventory.forEach((x, index) => {
           if (x.itemId.toString() === inventoryItem.itemId) {
-            user.inventory[index].quantity += inventoryItem.quantity;
+            user.inventory[index].quantity += (+inventoryItem.quantity);
             flag = true;
           }
         });
