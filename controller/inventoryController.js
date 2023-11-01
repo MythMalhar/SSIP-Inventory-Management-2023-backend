@@ -12,7 +12,7 @@ export const addInventory = async (req, res) => {
         let flag = false;
         user.inventory.forEach((x, index) => {
           if (x.itemId.toString() === inventoryItem.itemId) {
-            user.inventory[index].quantity += (+inventoryItem.quantity);
+            user.inventory[index].quantity += +inventoryItem.quantity;
             flag = true;
           }
         });
@@ -81,6 +81,23 @@ export const updateInventory = async (req, res) => {
       message: "Inventory item updated successfully.",
       inventory: user.inventory,
     });
+  } catch (err) {
+    res.send({
+      success: false,
+      message: err.message,
+    });
+  }
+};
+
+export const deleteInventory = async (req, res) => {
+  try {
+    const { userId, inventoryId } = req.body;
+    const user = await User.findOne(userId);
+    const updatedInventory = user.inventory.filter((inventoryItem) => {
+      inventoryItem._id.toString() !== inventoryId;
+    });
+    user.inventory = updatedInventory;
+    await user.save;
   } catch (err) {
     res.send({
       success: false,

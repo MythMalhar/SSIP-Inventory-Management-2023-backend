@@ -4,6 +4,7 @@ import {
   addInventory,
   getInventory,
   updateInventory,
+  deleteInventory
 } from "../controller/inventoryController.js";
 
 const router = Router();
@@ -11,6 +12,6 @@ const router = Router();
 router
   .post("/", authMiddleware, addInventory)
   .get("/", authMiddleware, getInventory)
-  .put("/", authMiddleware, updateInventory);
-
+  .put("/", authMiddleware, updateInventory)
+  .delete("/",authMiddleware,deleteInventory);
 export default router;
