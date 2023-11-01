@@ -97,7 +97,7 @@ export const deleteInventory = async (req, res) => {
       inventoryItem._id.toString() !== inventoryId;
     });
     user.inventory = updatedInventory;
-    await user.save;
+    await user.save();
   } catch (err) {
     res.send({
       success: false,
