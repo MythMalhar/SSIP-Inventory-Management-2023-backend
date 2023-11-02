@@ -1,6 +1,5 @@
 import Item from "../models/itemModel.js";
 import User from "../models/userModel.js";
-import mongoose from "mongoose";
 
 export const createOrder = async (req, res) => {
   try {
@@ -56,15 +55,15 @@ export const updateOrder = async (req, res) => {
   try {
     const { storeManagerId, status, orderId } = req.body;
     const user = await User.findById(storeManagerId);
-    user.orders.forEach((order,index) => {
-      if(order._id.toString()===orderId){
-        user.orders[index].status=status;
-      };
+    user.orders.forEach((order, index) => {
+      if (order._id.toString() === orderId) {
+        user.orders[index].status = status;
+      }
     });
-    await user.save(); 
+    await user.save();
     res.send({
-      success:true,
-      message: "Entity updated."
+      success: true,
+      message: "Entity updated.",
     });
   } catch (err) {
     res.send({
