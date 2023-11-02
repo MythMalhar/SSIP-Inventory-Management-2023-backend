@@ -8,6 +8,20 @@ export const createOrder = async (req, res) => {
     const orders = await Promise.all(
       req.body.map(async (order) => {
         const item = await Item.findById(order.itemId);
+        let flag = false;
+        user.orders.forEach((x) => {
+          if (
+            x.itemId.toString() === order.itemId &&
+            x.status !== "completed"
+          ) {
+            flag = true;
+          }
+        });
+        if (flag === true) {
+          return {
+            itemId: "duplicate",
+          };
+        }
         return {
           ...order,
           name: item.name,
@@ -19,7 +33,11 @@ export const createOrder = async (req, res) => {
       })
     );
     console.log(orders);
-    user.orders.push(...orders);
+    const updatedOrders = orders.filter(
+      (order) => order.itemId !== "duplicate"
+    );
+    console.log(updatedOrders);
+    user.orders.push(...updatedOrders);
     await user.save();
     res.send({
       success: true,
