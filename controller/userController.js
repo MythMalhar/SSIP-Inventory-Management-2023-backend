@@ -53,19 +53,6 @@ export const loginUser = async (req, res) => {
 export const getUsers = async (req, res) => {
   try {
     let { role, branch, subBranch, department } = req.body;
-    // if (role === ROLES.DEPARTMENT_HEAD) {
-    //   role = ROLES.DEPARTMENT_STORE_MANAGER;
-    // } else if (role === ROLES.DEPARTMENT_STORE_MANAGER) {
-    //   role = ROLES.BRANCH_HEAD;
-    // } else if (role === ROLES.BRANCH_HEAD) {
-    //   role = ROLES.BRANCH_STORE_MANAGER;
-    // } else if (role === ROLES.BRANCH_STORE_MANAGER) {
-    //   role = ROLES.SUB_BRANCH_HEAD;
-    // } else if (role === ROLES.SUB_BRANCH_HEAD) {
-    //   role = ROLES.SUB_BRANCH_STORE_MANAGER;
-    // } else if (role === ROLES.SUB_BRANCH_STORE_MANAGER) {
-    //   role = ROLES.EMPLOYEE;
-    // }
     const users = await User.find({
       role,
       branch,
