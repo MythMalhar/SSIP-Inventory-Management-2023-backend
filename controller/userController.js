@@ -62,8 +62,8 @@ export const getUsers = async (req, res) => {
     } else if (role === ROLES.BRANCH_STORE_MANAGER) {
       role = ROLES.SUB_BRANCH_HEAD;
     } else if (role === ROLES.SUB_BRANCH_HEAD) {
-      role = ROLES.SUB_BRANCH_STORE_MANGER;
-    } else if (role === ROLES.SUB_BRANCH_STORE_MANGER) {
+      role = ROLES.SUB_BRANCH_STORE_MANAGER;
+    } else if (role === ROLES.SUB_BRANCH_STORE_MANAGER) {
       role = ROLES.EMPLOYEE;
     }
     const users = await User.find({
