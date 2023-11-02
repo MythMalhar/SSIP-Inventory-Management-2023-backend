@@ -53,23 +53,20 @@ export const fetchAllOrders = async (req, res) => {
 
 export const updateOrder = async (req, res) => {
   try {
-    const { storeManagerId, status, orderId } = req.body;
+    const { storeManagerId, status } = req.body;
     const user = await User.findById(storeManagerId);
     user.orders.forEach((order, index) => {
-      if (order._id.toString() === orderId) {
-        user.orders[index].status = status;
-      }
+      user.orders[index].status = status;
     });
     await user.save();
     res.send({
       success: true,
-      message: "Entity updated.",
+      message: "Orders Status Updated Successfully",
     });
   } catch (err) {
     res.send({
       success: false,
       message: err.message,
-      orders: [],
     });
   }
 };
