@@ -106,7 +106,10 @@ export const updateSingleOrder = async (req, res) => {
       if (order._id.toString() === orderId) {
         if (status) user.orders[index].status = status;
         if (delivered)
-          user.orders[index].delivered = Math.min(delivered, order.quantity);
+          user.orders[index].delivered = Math.min(
+            user.orders[index].delivered + delivered,
+            order.quantity
+          );
       }
     });
     await user.save();
