@@ -78,8 +78,8 @@ export const fetchAllOrders = async (req, res) => {
 
 export const updateOrder = async (req, res) => {
   try {
-    const { userId, status } = req.body;
-    const user = await User.findById(userId);
+    const { storeManagerId, status } = req.body;
+    const user = await User.findById(storeManagerId);
     user.orders.forEach((order, index) => {
       if (status) user.orders[index].status = status;
     });
