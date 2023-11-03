@@ -11,6 +11,7 @@ export const createOrder = async (req, res) => {
         let flag = false;
         user.orders.forEach((x) => {
           if (
+            (user.role === "employee" || user.role.includes("head")) &&
             x.itemId.toString() === order.itemId &&
             x.status !== "completed"
           ) {
