@@ -78,13 +78,36 @@ export const fetchAllOrders = async (req, res) => {
 
 export const updateOrder = async (req, res) => {
   try {
-    const { user_id, status, delivered } = req.body;
-    const userId = user_id;
+    const { userId, status } = req.body;
     const user = await User.findById(userId);
     user.orders.forEach((order, index) => {
       if (status) user.orders[index].status = status;
-      if (delivered)
-        user.orders[index].delivered = Math.min(delivered, order.quantity);
+    });
+    await user.save();
+    res.send({
+      success: true,
+      message: "Orders Updated Successfully",
+    });
+  } catch (err) {
+    res.send({
+      success: false,
+      message: err.message,
+    });
+  }
+};
+
+export const updateSingleOrder = async (req, res) => {
+  try {
+    const { user_id, status, delivered } = req.body;
+    const userId = user_id;
+    const { orderId } = req.params;
+    const user = await User.findById(userId);
+    user.orders.forEach((order, index) => {
+      if (order._id.toString() === orderId) {
+        if (status) user.orders[index].status = status;
+        if (delivered)
+          user.orders[index].delivered = Math.min(delivered, order.quantity);
+      }
     });
     await user.save();
     res.send({

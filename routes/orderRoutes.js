@@ -4,6 +4,7 @@ import {
   createOrder,
   fetchAllOrders,
   updateOrder,
+  updateSingleOrder,
 } from "../controller/orderController.js";
 
 const router = Router();
@@ -11,6 +12,7 @@ const router = Router();
 router
   .post("/", authMiddleware, createOrder)
   .get("/", authMiddleware, fetchAllOrders)
-  .put("/", authMiddleware, updateOrder);
+  .put("/", authMiddleware, updateOrder)
+  .put("/:orderId", authMiddleware, updateSingleOrder);
 
 export default router;
