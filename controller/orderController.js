@@ -88,7 +88,7 @@ export const updateOrder = async (req, res) => {
     await user.save();
     res.send({
       success: true,
-      message: "Orders Status Updated Successfully",
+      message: "Orders Updated Successfully",
     });
   } catch (err) {
     res.send({
