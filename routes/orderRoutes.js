@@ -1,8 +1,5 @@
 import { Router } from "express";
-import {
-  authMiddleware,
-  authMiddlewareHead,
-} from "../middlewares/authMiddleware.js";
+import { authMiddleware } from "../middlewares/authMiddleware.js";
 import {
   createOrder,
   fetchAllOrders,
@@ -14,6 +11,6 @@ const router = Router();
 router
   .post("/", authMiddleware, createOrder)
   .get("/", authMiddleware, fetchAllOrders)
-  .put("/", authMiddlewareHead, updateOrder);
+  .put("/", authMiddleware, updateOrder);
 
 export default router;
