@@ -40,6 +40,12 @@ export const createOrder = async (req, res) => {
     console.log(updatedOrders);
     user.orders.push(...updatedOrders);
     await user.save();
+    if (req.body.length > updatedOrders.length) {
+      return res.send({
+        success: true,
+        message: "Same item is not added, Rest are added",
+      });
+    }
     res.send({
       success: true,
       message: "Order created successfully",
