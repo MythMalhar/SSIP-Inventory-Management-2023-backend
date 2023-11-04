@@ -66,7 +66,7 @@ export const getUsers = async (req, res) => {
       });
     }
 
-    console.log(users);
+    // console.log(users);
     if (!users) {
       throw new Error("No users found");
     }
