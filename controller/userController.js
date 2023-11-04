@@ -70,7 +70,7 @@ export const getUsers = async (req, res) => {
     if (!users) {
       throw new Error("No users found");
     }
-    console.log(users);
+    // console.log(users);
     res.send({
       success: true,
       message: "Users fetched successfully",
