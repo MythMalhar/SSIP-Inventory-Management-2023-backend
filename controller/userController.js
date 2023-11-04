@@ -56,7 +56,7 @@ export const getUsers = async (req, res) => {
     let users;
     console.log(role);
     if (role === ROLES.ADMIN) {
-      users = await User.find();
+      users = await User.find({});
     } else {
       users = await User.find({
         role,
