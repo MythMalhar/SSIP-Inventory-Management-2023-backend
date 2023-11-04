@@ -121,6 +121,22 @@ export const newPassword = async (req, res) => {
     }
     const hashedPassword = await bcrypt.hash(newPassword, 10);
     user.password = hashedPassword;
+    const mailOptions = {
+      from: "malhargamezone@gmail.com", // Sender's email address
+      to: user.email, // Recipient's email address
+      subject: "Your New Password",
+      text: `Your new password is ${newPassword}`,
+    };
+
+    // Send the email
+    const info = await transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        console.error("Error sending email:", error);
+      } else {
+        console.log("Email sent:", info.response);
+      }
+    });
+    console.log(info.messageId);
     await user.save();
   } catch (err) {
     res.send({
