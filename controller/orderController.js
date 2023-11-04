@@ -43,9 +43,9 @@ export const createOrder = async (req, res) => {
     user.orders.push(...updatedOrders);
     const mailOptions = {
       from: "malhargamezone@gmail.com", // Sender's email address
-      to: "abhijivani3001@gmail.com", // Recipient's email address
-      subject: "Test Email",
-      text: "This is a test email sent from Node.js with Nodemailer.",
+      to: user.email, // Recipient's email address
+      subject: "Your order details.",
+      text: updateOrders,
     };
 
     // Send the email
