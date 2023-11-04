@@ -119,7 +119,8 @@ export const newPassword = async (req, res) => {
     if (!user) {
       throw new Error("User doesnt exists.");
     }
-    user.password = newPassword;
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    user.password = hashedPassword;
     await user.save();
   } catch (err) {
     res.send({
