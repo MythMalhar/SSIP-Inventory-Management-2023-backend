@@ -56,7 +56,7 @@ export const createOrder = async (req, res) => {
         console.log("Email sent:", info.response);
       }
     });
-    console.log(info.messageId);
+    // console.log(info.messageId);
     await user.save();
     if (req.body.length > updatedOrders.length) {
       return res.send({
