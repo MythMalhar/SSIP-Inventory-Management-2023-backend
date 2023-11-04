@@ -2,6 +2,7 @@ import User from "../models/userModel.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import ROLES from "../constants/ROLES.js";
+import transporter from "../config/mailerConfig.js";
 
 export const registerUser = async (req, res) => {
   try {
