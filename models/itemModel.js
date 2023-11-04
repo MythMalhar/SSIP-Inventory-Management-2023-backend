@@ -17,6 +17,16 @@ const itemSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  minValue : {
+    type: Number,
+    required: true,
+    default:0
+  },
+  maxValue: {
+    type : Number,
+    required : true,
+    default : 100
+  },
   imageUrl: {
     type: String,
     required: true,

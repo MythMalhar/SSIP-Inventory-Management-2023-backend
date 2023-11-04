@@ -101,3 +101,23 @@ export const getCurrentUser = async (req, res) => {
     });
   }
 };
+
+export const newPassword = async (req, res) => {
+  try {
+    const { email_id, newPassword } = req.body;
+    if (!email_id || !newPassword) {
+      throw new Error("Fill all fields");
+    }
+    const user = await User.findById(email_id);
+    if (!user) {
+      throw new Error("User doesnt exists.");
+    }
+    user.password = newPassword;
+    await user.save();
+  } catch (err) {
+    res.send({
+      success: false,
+      message: err.message,
+    });
+  }
+};
