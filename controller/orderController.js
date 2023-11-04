@@ -45,7 +45,7 @@ export const createOrder = async (req, res) => {
       from: "malhargamezone@gmail.com", // Sender's email address
       to: user.email, // Recipient's email address
       subject: "Your order details.",
-      text: updateOrders,
+      text: updatedOrders,
     };
 
     // Send the email
