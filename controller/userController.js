@@ -115,7 +115,7 @@ export const newPassword = async (req, res) => {
     if (!email_id || !newPassword) {
       throw new Error("Fill all fields");
     }
-    const user = await User.findById(email_id);
+    const user = await User.findOne({email: email_id});
     if (!user) {
       throw new Error("User doesnt exists.");
     }
