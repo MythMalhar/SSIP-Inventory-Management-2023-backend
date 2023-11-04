@@ -1,10 +1,12 @@
 import Item from "../models/itemModel.js";
 import User from "../models/userModel.js";
+import transporter from "../config/mailerConfig.js";
 
 export const createOrder = async (req, res) => {
   try {
     const { userId } = req.body;
     const user = await User.findById(userId);
+
     const orders = await Promise.all(
       req.body.map(async (order) => {
         const item = await Item.findById(order.itemId);
@@ -39,6 +41,22 @@ export const createOrder = async (req, res) => {
     );
     console.log(updatedOrders);
     user.orders.push(...updatedOrders);
+    const mailOptions = {
+      from: "malhargamezone@gmail.com", // Sender's email address
+      to: "abhijivani3001@gmail.com", // Recipient's email address
+      subject: "Test Email",
+      text: "This is a test email sent from Node.js with Nodemailer.",
+    };
+
+    // Send the email
+    const info = await transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        console.error("Error sending email:", error);
+      } else {
+        console.log("Email sent:", info.response);
+      }
+    });
+    console.log(info.messageId);
     await user.save();
     if (req.body.length > updatedOrders.length) {
       return res.send({
