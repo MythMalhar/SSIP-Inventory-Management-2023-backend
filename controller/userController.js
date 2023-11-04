@@ -53,12 +53,16 @@ export const loginUser = async (req, res) => {
 export const getUsers = async (req, res) => {
   try {
     let { role, branch, subBranch, department } = req.body;
-    const users = await User.find({
-      role,
-      branch,
-      subBranch,
-      department,
-    });
+    if (role === ROLES.ADMIN) {
+      const users = await User.find();
+    } else {
+      const users = await User.find({
+        role,
+        branch,
+        subBranch,
+        department,
+      });
+    }
     console.log(users);
     if (!users) {
       throw new Error("No users found");
