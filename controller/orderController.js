@@ -6,25 +6,9 @@ export const createOrder = async (req, res) => {
   try {
     const { userId } = req.body;
     const user = await User.findById(userId);
-
-    const orders = await Promise.all(
+    const bulkOrder = await Promise.all(
       req.body.map(async (order) => {
         const item = await Item.findById(order.itemId);
-        let flag = false;
-        user.orders.forEach((x) => {
-          if (
-            (user.role === "employee" || user.role.includes("head")) &&
-            x.itemId.toString() === order.itemId &&
-            x.status !== "completed"
-          ) {
-            flag = true;
-          }
-        });
-        if (flag === true) {
-          return {
-            itemId: "duplicate",
-          };
-        }
         return {
           ...order,
           name: item.name,
@@ -35,12 +19,8 @@ export const createOrder = async (req, res) => {
         };
       })
     );
-    console.log(orders);
-    const updatedOrders = orders.filter(
-      (order) => order.itemId !== "duplicate"
-    );
-    console.log(updatedOrders);
-    user.orders.push(...updatedOrders);
+    user.bulkOrders.push({ orders: bulkOrder });
+    /*
     const mailOptions = {
       from: "malhargamezone@gmail.com", // Sender's email address
       to: user.email, // Recipient's email address
@@ -48,7 +28,6 @@ export const createOrder = async (req, res) => {
       text: updatedOrders.toString(),
     };
 
-    // Send the email
     const info = await transporter.sendMail(mailOptions, (error, info) => {
       if (error) {
         console.error("Error sending email:", error);
@@ -56,14 +35,9 @@ export const createOrder = async (req, res) => {
         console.log("Email sent:", info.response);
       }
     });
-    // console.log(info.messageId);
+    */
+    console.log(user.bulkOrders);
     await user.save();
-    if (req.body.length > updatedOrders.length) {
-      return res.send({
-        success: true,
-        message: "Same item is not added, Rest are added",
-      });
-    }
     res.send({
       success: true,
       message: "Order created successfully",
@@ -83,13 +57,13 @@ export const fetchAllOrders = async (req, res) => {
     res.send({
       success: true,
       message: "Fetched orders successfully",
-      orders: user.orders,
+      bulkOrders: user.bulkOrders,
     });
   } catch (err) {
     res.send({
       success: false,
       message: err.message,
-      orders: [],
+      bulkOrders: [],
     });
   }
 };

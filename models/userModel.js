@@ -1,50 +1,49 @@
-import mongoose, { Schema } from "mongoose";
+import mongoose from "mongoose";
 
-const orderSchema = new mongoose.Schema(
+const orderSchema = new mongoose.Schema({
+  itemId: {
+    type: mongoose.Schema.ObjectId,
+    required: true,
+  },
+  name: {
+    type: String,
+    required: true,
+  },
+  description: {
+    type: String,
+    required: true,
+  },
+  company: {
+    type: String,
+    required: true,
+  },
+  category: {
+    type: String,
+    required: true,
+  },
+  imageUrl: {
+    type: String,
+    required: true,
+  },
+  quantity: {
+    type: Number,
+    required: true,
+  },
+  delivered: {
+    type: Number,
+    required: true,
+    default: 0,
+  },
+  status: {
+    type: String,
+    required: true,
+    default: "pending",
+  },
+});
+
+const bulkOrderSchema = new mongoose.Schema(
   {
-    itemId: {
-      type: mongoose.Schema.ObjectId,
-      required: true,
-    },
-    name: {
-      type: String,
-      required: true,
-    },
-    description: {
-      type: String,
-      required: true,
-    },
-    company: {
-      type: String,
-      required: true,
-    },
-    category: {
-      type: String,
-      required: true,
-    },
-    imageUrl: {
-      type: String,
-      required: true,
-    },
-    quantity: {
-      type: Number,
-      required: true,
-    },
-    delivered: {
-      type: Number,
-      required: true,
-      default: 0,
-    },
-    orderType: {
-      type: String,
-      required: true,
-      default: "personal",
-    },
-    status: {
-      type: String,
-      required: true,
-      default: "pending",
-    },
+    orders: [orderSchema],
   },
   { timestamps: true }
 );
@@ -118,7 +117,7 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    orders: [orderSchema],
+    bulkOrders: [bulkOrderSchema],
     inventory: [inventorySchema],
   },
   { timestamps: true }
