@@ -92,16 +92,21 @@ export const updateSingleOrder = async (req, res) => {
   try {
     const { user_id, status, delivered } = req.body;
     const userId = user_id;
-    const { orderId } = req.params;
+    const { bulkOrderId, orderId } = req.params;
     const user = await User.findById(userId);
-    user.orders.forEach((order, index) => {
-      if (order._id.toString() === orderId) {
-        if (status) user.orders[index].status = status;
-        if (delivered)
-          user.orders[index].delivered = Math.min(
-            user.orders[index].delivered + delivered,
-            order.quantity
-          );
+    user.bulkOrders.forEach((bulkOrder, index) => {
+      if (bulkOrder._id.toString() === bulkOrderId) {
+        bulkOrder.orders.forEach((order, index2) => {
+          if (order._id.toString() === orderId) {
+            if (status) user.bulkOrders[index].orders[index2].status = status;
+            if (delivered) {
+              const lastDelivered =
+                user.bulkOrders[index].orders[index2].delivered;
+              user.bulkOrders[index].orders[index2].delivered =
+                lastDelivered + delivered;
+            }
+          }
+        });
       }
     });
     await user.save();
