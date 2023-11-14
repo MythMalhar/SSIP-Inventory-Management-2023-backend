@@ -55,19 +55,15 @@ export const getUsers = async (req, res) => {
   try {
     let { role, branch, subBranch, department } = req.body;
     let filters = {};
-    if (role && role === ROLES.ADMIN) filters = { ...filters, role };
+    if (role) filters = { ...filters, role };
     if (branch) filters = { ...filters, branch };
     if (subBranch) filters = { ...filters, subBranch };
     if (department) filters = { ...filters, department };
-    let users;
+    const users = await User.find(filters);
 
-    users = await User.find(filters);
-
-    // console.log(users);
     if (!users) {
       throw new Error('No users found');
     }
-    // console.log(users);
     res.send({
       success: true,
       message: 'Users fetched successfully',
