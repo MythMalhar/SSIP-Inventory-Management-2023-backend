@@ -53,13 +53,15 @@ export const loginUser = async (req, res) => {
 
 export const getUsers = async (req, res) => {
   try {
-    let { role, branch, subBranch, department } = req.body;
+    let { role, branch, subBranch, department, userId } = req.body;
     let filters = {};
     if (role) filters = { ...filters, role };
     if (branch) filters = { ...filters, branch };
     if (subBranch) filters = { ...filters, subBranch };
     if (department) filters = { ...filters, department };
-    const users = await User.find(filters);
+    const users = (await User.find(filters)).filter(
+      (user) => user._id != userId
+    );
 
     if (!users) {
       throw new Error('No users found');
