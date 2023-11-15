@@ -6,7 +6,7 @@ export const createNotification = async (req, res) => {
   try {
     let { userId, receiverId, message } = req.body;
     if (!receiverId) {
-      const currentUser = User.findById(userId);
+      const currentUser = await User.findById(userId);
       let filters = {};
       if (currentUser.role === ROLES.EMPLOYEE) {
         filters = {
@@ -60,8 +60,9 @@ export const createNotification = async (req, res) => {
 export const getNotifications = async (req, res) => {
   try {
     const { userId } = req.body;
-    console.log(userId.toString());
-    const notifications = Notification.find({ receiverId: userId.toString() });
+    const notifications = await Notification.find({
+      receiverId: userId.toString(),
+    });
     res.send({
       success: true,
       message: 'Notifications fetched successfully',
@@ -79,8 +80,10 @@ export const getNotifications = async (req, res) => {
 export const updateNotifications = async (req, res) => {
   try {
     const { userId } = req.body;
-    const notifications = Notification.find({ receiverId: userId.toString() });
-    await notifications.forEach((notification) => {
+    const notifications = await Notification.find({
+      receiverId: userId.toString(),
+    });
+    notifications.forEach((notification) => {
       notification.isSeen = true;
     });
     await notifications.save();
@@ -101,7 +104,7 @@ export const updateNotifications = async (req, res) => {
 export const deleteNotification = async (req, res) => {
   try {
     const { notificationId } = req.params;
-    Notification.findOneAndDelete({ _id: notificationId });
+    await Notification.findOneAndDelete({ _id: notificationId });
     res.send({
       success: true,
       message: 'Notification deleted successfully',
