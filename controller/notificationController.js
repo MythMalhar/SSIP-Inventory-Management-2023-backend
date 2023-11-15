@@ -60,6 +60,7 @@ export const createNotification = async (req, res) => {
 export const getNotifications = async (req, res) => {
   try {
     const { userId } = req.body;
+    console.log(userId.toString());
     const notifications = Notification.find({ receiverId: userId.toString() });
     res.send({
       success: true,
