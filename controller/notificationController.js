@@ -60,7 +60,7 @@ export const createNotification = async (req, res) => {
 export const getNotifications = async (req, res) => {
   try {
     const { userId } = req.body;
-    const notifications = Notification.find({ receiverId: userId });
+    const notifications = Notification.find({ receiverId: userId.toString() });
     res.send({
       success: true,
       message: 'Notifications fetched successfully',
@@ -78,7 +78,7 @@ export const getNotifications = async (req, res) => {
 export const updateNotifications = async (req, res) => {
   try {
     const { userId } = req.body;
-    const notifications = Notification.find({ receiverId: userId });
+    const notifications = Notification.find({ receiverId: userId.toString() });
     await notifications.forEach((notification) => {
       notification.isSeen = true;
     });
