@@ -1,5 +1,11 @@
 import { Router } from 'express';
 import { authMiddleware } from '../middlewares/authMiddleware.js';
+import {
+  createNotification,
+  getNotifications,
+  updateNotifications,
+  deleteNotification,
+} from '../controller/notificationController.js';
 
 const router = Router();
 
