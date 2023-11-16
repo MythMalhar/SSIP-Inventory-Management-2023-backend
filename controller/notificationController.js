@@ -91,7 +91,7 @@ export const updateNotifications = async (req, res) => {
         });
       }
     });
-    notifications = Notification.find({
+    notifications = await Notification.find({
       receiverId: userId.toString(),
     });
     res.send({
