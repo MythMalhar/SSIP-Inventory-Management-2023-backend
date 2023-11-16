@@ -87,7 +87,6 @@ export const updateNotifications = async (req, res) => {
       notifications.map(async (notification) => {
         if (notification.isSeen === false) {
           await Notification.findByIdAndUpdate(notification._id, {
-            ...notification,
             isSeen: true,
           });
         }
