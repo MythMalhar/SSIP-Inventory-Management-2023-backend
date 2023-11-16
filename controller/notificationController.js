@@ -5,8 +5,9 @@ import User from '../models/userModel.js';
 export const createNotification = async (req, res) => {
   try {
     let { userId, receiverId, message } = req.body;
+    const currentUser = await User.findById(userId);
+    const senderName = currentUser.name;
     if (!receiverId) {
-      const currentUser = await User.findById(userId);
       let filters = {};
       if (currentUser.role === ROLES.EMPLOYEE) {
         filters = {
@@ -39,12 +40,18 @@ export const createNotification = async (req, res) => {
           role: ROLES.DEPARTMENT_STORE_MANAGER,
           department: currentUser.department,
         };
+      } else {
+        filters = {
+          role: currentUser.role,
+        };
       }
-      receiverId = await User.findOne({ ...filters })._id;
+      receiverId = await User.findOne(filters);
+      receiverId = receiverId._id;
     }
     const notification = new Notification({
       senderId: userId,
       receiverId,
+      senderName,
       message,
     });
     await notification.save();
