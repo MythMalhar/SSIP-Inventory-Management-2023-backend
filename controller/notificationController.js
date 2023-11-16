@@ -1,6 +1,6 @@
-import ROLES from '../constants/ROLES.js';
-import Notification from '../models/notificationModel.js';
-import User from '../models/userModel.js';
+import ROLES from "../constants/ROLES.js";
+import Notification from "../models/notificationModel.js";
+import User from "../models/userModel.js";
 
 export const createNotification = async (req, res) => {
   try {
@@ -55,7 +55,7 @@ export const createNotification = async (req, res) => {
       message,
     });
     await notification.save();
-    res.send({ success: true, message: 'Notification send successfully' });
+    res.send({ success: true, message: "Notification send successfully" });
   } catch (err) {
     res.send({
       success: false,
@@ -69,10 +69,10 @@ export const getNotifications = async (req, res) => {
     const { userId } = req.body;
     const notifications = await Notification.find({
       receiverId: userId.toString(),
-    });
+    }).sort({ "createdAt": -1 });
     res.send({
       success: true,
-      message: 'Notifications fetched successfully',
+      message: "Notifications fetched successfully",
       notifications,
     });
   } catch (err) {
@@ -104,7 +104,7 @@ export const updateNotifications = async (req, res) => {
     });
     res.send({
       success: true,
-      message: 'Notifications updated successfully',
+      message: "Notifications updated successfully",
       notifications,
     });
   } catch (err) {
@@ -122,7 +122,7 @@ export const deleteNotification = async (req, res) => {
     await Notification.findOneAndDelete({ _id: notificationId });
     res.send({
       success: true,
-      message: 'Notification deleted successfully',
+      message: "Notification deleted successfully",
     });
   } catch (err) {
     res.send({
