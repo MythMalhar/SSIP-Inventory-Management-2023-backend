@@ -83,14 +83,16 @@ export const updateNotifications = async (req, res) => {
     let notifications = await Notification.find({
       receiverId: userId.toString(),
     });
-    notifications.forEach(async (notification) => {
-      if (notification.isSeen === false) {
-        await Notification.findByIdAndUpdate(notification._id, {
-          ...notification,
-          isSeen: true,
-        });
-      }
-    });
+    await Promise.all(
+      notifications.forEach(async (notification) => {
+        if (notification.isSeen === false) {
+          await Notification.findByIdAndUpdate(notification._id, {
+            ...notification,
+            isSeen: true,
+          });
+        }
+      })
+    );
     notifications = await Notification.find({
       receiverId: userId.toString(),
     });
