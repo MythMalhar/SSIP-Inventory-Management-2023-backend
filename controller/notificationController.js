@@ -70,7 +70,7 @@ export const getNotifications = async (req, res) => {
     });
   } catch (err) {
     res.send({
-      success: true,
+      success: false,
       message: err.message,
       notifications: [],
     });
@@ -80,13 +80,20 @@ export const getNotifications = async (req, res) => {
 export const updateNotifications = async (req, res) => {
   try {
     const { userId } = req.body;
-    const notifications = await Notification.find({
+    let notifications = await Notification.find({
       receiverId: userId.toString(),
     });
-    notifications.forEach((notification, index) => {
-      notifications[index].isSeen = true;
+    notifications.forEach(async (notification) => {
+      if (notification.isSeen === false) {
+        await Notification.findByIdAndUpdate(notification._id, {
+          ...notification,
+          isSeen: true,
+        });
+      }
     });
-    await notifications.save();
+    notifications = Notification.find({
+      receiverId: userId.toString(),
+    });
     res.send({
       success: true,
       message: 'Notifications updated successfully',
