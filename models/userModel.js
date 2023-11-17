@@ -1,4 +1,35 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
+
+const planningOrderSchema = new mongoose.Schema({
+  itemId: {
+    type: mongoose.Schema.ObjectId,
+    required: true,
+  },
+  name: {
+    type: String,
+    required: true,
+  },
+  description: {
+    type: String,
+    required: true,
+  },
+  company: {
+    type: String,
+    required: true,
+  },
+  category: {
+    type: String,
+    required: true,
+  },
+  imageUrl: {
+    type: String,
+    required: true,
+  },
+  quantity: {
+    type: Number,
+    required: true,
+  },
+});
 
 const orderSchema = new mongoose.Schema({
   itemId: {
@@ -34,10 +65,15 @@ const orderSchema = new mongoose.Schema({
     required: true,
     default: 0,
   },
+  masterPassword: {
+    type: String,
+    required: true,
+    default: '',
+  },
   status: {
     type: String,
     required: true,
-    default: "pending",
+    default: 'pending',
   },
 });
 
@@ -123,6 +159,6 @@ const userSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-const User = mongoose.model("users", userSchema);
+const User = mongoose.model('users', userSchema);
 
 export default User;
