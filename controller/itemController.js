@@ -3,8 +3,7 @@ import Item from "../models/itemModel.js";
 export const addItem = async (req, res) => {
   try {
     const item = await Item.findOne({
-      name: req.body.name,
-      company: req.body.company,
+      name: new RegExp(`^${req.body.name}$`, "i"),
     });
     if (item) throw new Error("Item Already exists.");
     await new Item(req.body).save();
@@ -32,7 +31,7 @@ export const getItems = async (req, res) => {
     res.send({
       success: false,
       message: err.message,
-      items: []
+      items: [],
     });
   }
 };
