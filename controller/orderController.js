@@ -11,7 +11,7 @@ export const createOrder = async (req, res) => {
         const item = await Item.findById(order.itemId);
         return {
           ...order,
-          masterPassword: order.masterPassword || '',
+          masterPassword: order.masterPassword ? order.masterPassword : 'none',
           name: item.name,
           description: item.description,
           company: item.company,
@@ -37,7 +37,6 @@ export const createOrder = async (req, res) => {
       }
     });
     */
-    console.log(user.bulkOrders);
     await user.save();
     res.send({
       success: true,

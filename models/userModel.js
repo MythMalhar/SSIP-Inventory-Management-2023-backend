@@ -80,7 +80,7 @@ const orderSchema = new mongoose.Schema({
   masterPassword: {
     type: String,
     required: true,
-    default: '',
+    default: 'none',
   },
   status: {
     type: String,
