@@ -11,6 +11,7 @@ export const createOrder = async (req, res) => {
         const item = await Item.findById(order.itemId);
         return {
           ...order,
+          masterPassword: order.masterPassword || '',
           name: item.name,
           description: item.description,
           company: item.company,
