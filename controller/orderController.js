@@ -1,6 +1,6 @@
-import Item from "../models/itemModel.js";
-import User from "../models/userModel.js";
-import transporter from "../config/mailerConfig.js";
+import Item from '../models/itemModel.js';
+import User from '../models/userModel.js';
+import transporter from '../config/mailerConfig.js';
 
 export const createOrder = async (req, res) => {
   try {
@@ -40,7 +40,7 @@ export const createOrder = async (req, res) => {
     await user.save();
     res.send({
       success: true,
-      message: "Order created successfully",
+      message: 'Order created successfully',
     });
   } catch (err) {
     res.send({
@@ -54,13 +54,11 @@ export const fetchAllOrders = async (req, res) => {
   try {
     const { userId } = req.body;
     const user = await User.findById(userId);
-    res
-      .send({
-        success: true,
-        message: "Fetched orders successfully",
-        bulkOrders: user.bulkOrders,
-      })
-      .sort({ createdAt: -1 });
+    res.send({
+      success: true,
+      message: 'Fetched orders successfully',
+      bulkOrders: user.bulkOrders,
+    });
   } catch (err) {
     res.send({
       success: false,
@@ -80,7 +78,7 @@ export const updateAllOrders = async (req, res) => {
     await user.save();
     res.send({
       success: true,
-      message: "Orders Updated Successfully",
+      message: 'Orders Updated Successfully',
     });
   } catch (err) {
     res.send({
@@ -112,7 +110,7 @@ export const updateBulkOrder = async (req, res) => {
     await user.save();
     res.send({
       success: true,
-      message: "Orders Updated Successfully",
+      message: 'Orders Updated Successfully',
     });
   } catch (err) {
     res.send({
@@ -146,7 +144,7 @@ export const updateSingleOrder = async (req, res) => {
     await user.save();
     res.send({
       success: true,
-      message: "Orders Updated Successfully",
+      message: 'Orders Updated Successfully',
     });
   } catch (err) {
     res.send({
