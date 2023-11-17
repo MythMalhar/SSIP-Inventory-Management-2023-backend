@@ -54,11 +54,13 @@ export const fetchAllOrders = async (req, res) => {
   try {
     const { userId } = req.body;
     const user = await User.findById(userId);
-    res.send({
-      success: true,
-      message: "Fetched orders successfully",
-      bulkOrders: user.bulkOrders,
-    });
+    res
+      .send({
+        success: true,
+        message: "Fetched orders successfully",
+        bulkOrders: user.bulkOrders,
+      })
+      .sort({ createdAt: -1 });
   } catch (err) {
     res.send({
       success: false,
