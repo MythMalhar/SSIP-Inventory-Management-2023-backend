@@ -17,6 +17,10 @@ const itemSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  price :{
+    type : Number,
+    required : true
+  },
   minValue : {
     type: Number,
     required: true,

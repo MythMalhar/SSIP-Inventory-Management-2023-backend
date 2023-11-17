@@ -64,8 +64,7 @@ export const fetchAllPlanningOrders = async (req, res) => {
         success: true,
         message: 'Fetched planning orders successfully',
         planningBulkOrders: user.planningBulkOrders,
-      })
-      .sort({ createdAt: -1 });
+      });
   } catch (err) {
     res.send({
       success: false,
