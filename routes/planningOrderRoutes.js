@@ -3,7 +3,7 @@ import { authMiddleware } from '../middlewares/authMiddleware.js';
 import {
   createPlanningOrder,
   fetchAllPlanningOrders,
-} from '../controller/orderController.js';
+} from '../controller/planningOrderController.js';
 
 const router = Router();
 
