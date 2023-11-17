@@ -29,7 +29,19 @@ const planningOrderSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
+  status: {
+    type: String,
+    required: true,
+    default: 'pending',
+  },
 });
+
+const planningBulkOrderSchema = new mongoose.Schema(
+  {
+    planningOrders: [planningOrderSchema],
+  },
+  { timestamps: true }
+);
 
 const orderSchema = new mongoose.Schema({
   itemId: {
@@ -154,6 +166,7 @@ const userSchema = new mongoose.Schema(
       required: true,
     },
     bulkOrders: [bulkOrderSchema],
+    planningBulkOrders: [planningBulkOrderSchema],
     inventory: [inventorySchema],
   },
   { timestamps: true }
