@@ -4,6 +4,7 @@ dotenv.config();
 import db from './config/dbConfig.js';
 import userRoutes from './routes/userRoutes.js';
 import orderRoutes from './routes/orderRoutes.js';
+import planningOrderRoutes from './routes/planningOrderRoutes.js';
 import itemRoutes from './routes/itemRoutes.js';
 import inventoryRoutes from './routes/inventoryRoutes.js';
 import notificationRoutes from './routes/notificationRoutes.js';
@@ -26,6 +27,7 @@ app.use('/hello', (req, res) => {
 });
 app.use('/api/user', userRoutes);
 app.use('/api/order', orderRoutes);
+app.use('/api/planningorder', planningOrderRoutes);
 app.use('/api/item', itemRoutes);
 app.use('/api/inventory', inventoryRoutes);
 app.use('/api/notification', notificationRoutes);
