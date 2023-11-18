@@ -22,20 +22,20 @@ export const createOrder = async (req, res) => {
     );
     user.bulkOrders.push({ orders: bulkOrder });
     
-    const mailOptions = {
-      from: "malhargamezone@gmail.com", // Sender's email address
-      to: "malhargamezone@gmail.com", // Recipient's email address
-      subject: "Your order details.",
-      html: { path : "../models/table.html"},
-    };
+    // const mailOptions = {
+    //   from: "malhargamezone@gmail.com", // Sender's email address
+    //   to: "malhargamezone@gmail.com", // Recipient's email address
+    //   subject: "Your order details.",
+    //   html: { path : "../models/table.html"},
+    // };
 
-    const info = await transporter.sendMail(mailOptions, (error, info) => {
-      if (error) {
-        console.error("Error sending email:", error);
-      } else {
-        console.log("Email sent:", info.response);
-      }
-    });
+    // const info = await transporter.sendMail(mailOptions, (error, info) => {
+    //   if (error) {
+    //     console.error("Error sending email:", error);
+    //   } else {
+    //     console.log("Email sent:", info.response);
+    //   }
+    // });
 
     await user.save();
     res.send({
