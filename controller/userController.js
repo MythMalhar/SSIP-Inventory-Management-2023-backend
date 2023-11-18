@@ -11,7 +11,14 @@ export const registerUser = async (req, res) => {
     if (user) throw new Error('User already exists');
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    const newUser = new User({ ...req.body, password: hashedPassword });
+    const newUser = new User({
+      ...req.body,
+      password: hashedPassword,
+      planningBulkOrders: {
+        planningOrders: [],
+        status: 'pending',
+      },
+    });
     await newUser.save();
     res.send({
       success: true,
