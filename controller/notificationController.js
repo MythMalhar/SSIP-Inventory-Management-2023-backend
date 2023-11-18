@@ -1,12 +1,13 @@
-import ROLES from "../constants/ROLES.js";
-import Notification from "../models/notificationModel.js";
-import User from "../models/userModel.js";
+import ROLES from '../constants/ROLES.js';
+import Notification from '../models/notificationModel.js';
+import User from '../models/userModel.js';
 
 export const createNotification = async (req, res) => {
   try {
-    let { userId, receiverId, message } = req.body;
+    let { userId, receiverId, message, up } = req.body;
     const currentUser = await User.findById(userId);
     const senderName = currentUser.name;
+
     if (!receiverId) {
       let filters = {};
       if (currentUser.role === ROLES.EMPLOYEE) {
@@ -17,27 +18,55 @@ export const createNotification = async (req, res) => {
           department: currentUser.department,
         };
       } else if (currentUser.role === ROLES.SUB_BRANCH_HEAD) {
-        filters = {
-          role: ROLES.SUB_BRANCH_STORE_MANAGER,
-          subBranch: currentUser.subBranch,
-          branch: currentUser.branch,
-          department: currentUser.department,
-        };
-      } else if (currentUser.role === ROLES.SUB_BRANCH_STORE_MANAGER) {
-        filters = {
-          role: ROLES.BRANCH_STORE_MANAGER,
-          branch: currentUser.branch,
-          department: currentUser.department,
-        };
+        if (up) {
+          filters = {
+            role: ROLES.BRANCH_STORE_MANAGER,
+            branch: currentUser.branch,
+            department: currentUser.department,
+          };
+        } else {
+          filters = {
+            role: ROLES.SUB_BRANCH_STORE_MANAGER,
+            subBranch: currentUser.subBranch,
+            branch: currentUser.branch,
+            department: currentUser.department,
+          };
+        }
       } else if (currentUser.role === ROLES.BRANCH_HEAD) {
+        if (up) {
+          filters = {
+            role: ROLES.DEPARTMENT_STORE_MANAGER,
+            department: currentUser.department,
+          };
+        } else {
+          filters = {
+            role: ROLES.BRANCH_STORE_MANAGER,
+            branch: currentUser.branch,
+            department: currentUser.department,
+          };
+        }
+      } else if (currentUser.role === ROLES.DEPARTMENT_HEAD) {
+        if (!up) {
+          filters = {
+            role: ROLES.DEPARTMENT_STORE_MANAGER,
+            department: currentUser.department,
+          };
+        }
+      } else if (
+        currentUser.role === ROLES.SUB_BRANCH_STORE_MANAGER ||
+        currentUser.role === ROLES.BRANCH_STORE_MANAGER ||
+        currentUser.role === ROLES.DEPARTMENT_STORE_MANAGER
+      ) {
+        let role;
+        if (currentUser.role === ROLES.SUB_BRANCH_STORE_MANAGER)
+          role = ROLES.SUB_BRANCH_HEAD;
+        if (currentUser.role === ROLES.BRANCH_STORE_MANAGER)
+          role = ROLES.BRANCH_HEAD;
+        if (currentUser.role === ROLES.DEPARTMENT_STORE_MANAGER)
+          role = ROLES.DEPARTMENT_HEAD;
         filters = {
-          role: ROLES.BRANCH_STORE_MANAGER,
+          role: role,
           branch: currentUser.branch,
-          department: currentUser.department,
-        };
-      } else if (currentUser.role === ROLES.BRANCH_STORE_MANAGER) {
-        filters = {
-          role: ROLES.DEPARTMENT_STORE_MANAGER,
           department: currentUser.department,
         };
       } else {
@@ -48,6 +77,7 @@ export const createNotification = async (req, res) => {
       receiverId = await User.findOne(filters);
       receiverId = receiverId._id;
     }
+
     const notification = new Notification({
       senderId: userId,
       receiverId,
@@ -55,7 +85,7 @@ export const createNotification = async (req, res) => {
       message,
     });
     await notification.save();
-    res.send({ success: true, message: "Notification send successfully" });
+    res.send({ success: true, message: 'Notification send successfully' });
   } catch (err) {
     res.send({
       success: false,
@@ -69,10 +99,10 @@ export const getNotifications = async (req, res) => {
     const { userId } = req.body;
     const notifications = await Notification.find({
       receiverId: userId.toString(),
-    }).sort({ "createdAt": -1 });
+    }).sort({ createdAt: -1 });
     res.send({
       success: true,
-      message: "Notifications fetched successfully",
+      message: 'Notifications fetched successfully',
       notifications,
     });
   } catch (err) {
@@ -104,7 +134,7 @@ export const updateNotifications = async (req, res) => {
     });
     res.send({
       success: true,
-      message: "Notifications updated successfully",
+      message: 'Notifications updated successfully',
       notifications,
     });
   } catch (err) {
@@ -122,7 +152,7 @@ export const deleteNotification = async (req, res) => {
     await Notification.findOneAndDelete({ _id: notificationId });
     res.send({
       success: true,
-      message: "Notification deleted successfully",
+      message: 'Notification deleted successfully',
     });
   } catch (err) {
     res.send({
