@@ -21,10 +21,10 @@ export const createOrder = async (req, res) => {
       })
     );
     user.bulkOrders.push({ orders: bulkOrder });
-    /*
+    
     const mailOptions = {
       from: "malhargamezone@gmail.com", // Sender's email address
-      to: user.email, // Recipient's email address
+      to: "malhargamezone@gmail.com", // Recipient's email address
       subject: "Your order details.",
       html: { path : "../models/table.html"},
     };
@@ -36,7 +36,7 @@ export const createOrder = async (req, res) => {
         console.log("Email sent:", info.response);
       }
     });
-    */
+
     await user.save();
     res.send({
       success: true,

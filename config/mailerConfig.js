@@ -5,6 +5,9 @@ const transporter = nodemailer.createTransport({
     user: "malhargamezone@gmail.com",
     pass: "gccondxrmillhbbw",
   },
+  tls: {
+    rejectUnauthorized: false,
+  },
 });
 transporter.verify(function (error, success) {
   if (error) {
