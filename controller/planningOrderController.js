@@ -6,15 +6,19 @@ export const createPlanningOrder = async (req, res) => {
   try {
     const { userId } = req.body;
     const user = await User.findById(userId);
-    if (user.planningBulkOrders.length) {
-      return res.send({
-        success: true,
-        message: 'You already created a Planning Order',
-      });
-    }
-    const planningBulkOrder = await Promise.all(
+    const planningOrder = await Promise.all(
       req.body.map(async (order) => {
         const item = await Item.findById(order.itemId);
+        let flag = false;
+        user.planningBulkOrders.planningOrders.forEach((x) => {
+          if (x.itemId.toString() === order.itemId) {
+            flag = true;
+          }
+        });
+        if (flag === true)
+          return {
+            itemId: 'duplicate',
+          };
         return {
           ...order,
           name: item.name,
@@ -25,7 +29,12 @@ export const createPlanningOrder = async (req, res) => {
         };
       })
     );
-    user.planningBulkOrders.push({ planningOrders: planningBulkOrder });
+    const updatedPlanningOrder = planningOrder.filter(
+      (order) => order.itemId !== 'duplicate'
+    );
+    user.planningBulkOrders.planningOrders.push(...updatedPlanningOrder);
+    user.planningBulkOrders.status = 'pending';
+    await user.save();
     /*
     const mailOptions = {
       from: "malhargamezone@gmail.com", // Sender's email address
@@ -42,10 +51,10 @@ export const createPlanningOrder = async (req, res) => {
       }
     });
     */
-    await user.save();
     res.send({
       success: true,
       message: 'Planning Order created successfully',
+      planningBulkOrders: user.planningBulkOrders,
     });
   } catch (err) {
     res.send({
@@ -59,103 +68,65 @@ export const fetchAllPlanningOrders = async (req, res) => {
   try {
     const { userId } = req.body;
     const user = await User.findById(userId);
-    res
-      .send({
-        success: true,
-        message: 'Fetched planning orders successfully',
-        planningBulkOrders: user.planningBulkOrders,
-      });
+    res.send({
+      success: true,
+      message: 'Fetched planning orders successfully',
+      planningBulkOrders: user.planningBulkOrders,
+    });
   } catch (err) {
     res.send({
       success: false,
       message: err.message,
-      planningBulkOrders: [],
+      planningBulkOrders: {},
     });
   }
 };
 
-// export const updateAllOrders = async (req, res) => {
-//   try {
-//     const { storeManagerId, status } = req.body;
-//     const user = await User.findById(storeManagerId);
-//     user.orders.forEach((order, index) => {
-//       if (status) user.orders[index].status = status;
-//     });
-//     await user.save();
-//     res.send({
-//       success: true,
-//       message: 'Orders Updated Successfully',
-//     });
-//   } catch (err) {
-//     res.send({
-//       success: false,
-//       message: err.message,
-//     });
-//   }
-// };
+export const updatePlanningOrder = async (req, res) => {
+  try {
+    const { userId, updatedQuantity, planningOrderId } = req.body;
+    const user = await User.findById(userId);
+    user.planningBulkOrders.planningOrders.forEach((order, index) => {
+      if (order._id.toString() === planningOrderId) {
+        user.planningBulkOrders.planningOrders[index].quantity =
+          updatedQuantity;
+      }
+    });
+    await user.save();
+    res.send({
+      success: true,
+      message: 'Inventory item updated successfully.',
+      planningBulkOrders: user.planningBulkOrders,
+    });
+  } catch (err) {
+    res.send({
+      success: false,
+      message: err.message,
+      planningBulkOrders: {},
+    });
+  }
+};
 
-// export const updateBulkOrder = async (req, res) => {
-//   try {
-//     const { user_id, status, delivered } = req.body;
-//     const userId = user_id;
-//     const { bulkOrderId } = req.params;
-//     const user = await User.findById(userId);
-//     user.bulkOrders.forEach((bulkOrder, index) => {
-//       if (bulkOrder._id.toString() === bulkOrderId) {
-//         bulkOrder.orders.forEach((order, index2) => {
-//           if (status) user.bulkOrders[index].orders[index2].status = status;
-//           if (delivered) {
-//             const lastDelivered =
-//               user.bulkOrders[index].orders[index2].delivered;
-//             user.bulkOrders[index].orders[index2].delivered =
-//               lastDelivered + delivered;
-//           }
-//         });
-//       }
-//     });
-//     await user.save();
-//     res.send({
-//       success: true,
-//       message: 'Orders Updated Successfully',
-//     });
-//   } catch (err) {
-//     res.send({
-//       success: false,
-//       message: err.message,
-//     });
-//   }
-// };
+export const deletePlanningOrder = async (req, res) => {
+  try {
+    const { userId } = req.body;
+    const { planningOrderId } = req.params;
+    const user = await User.findById(userId);
+    const updatedPlanningOrders = user.planningBulkOrders.planningOrders.filter(
+      (order) => order._id.toString() !== planningOrderId
+    );
+    user.planningBulkOrders.planningOrders = updatePlanningOrder;
 
-// export const updateSingleOrder = async (req, res) => {
-//   try {
-//     const { user_id, status, delivered } = req.body;
-//     const userId = user_id;
-//     const { bulkOrderId, orderId } = req.params;
-//     const user = await User.findById(userId);
-//     user.bulkOrders.forEach((bulkOrder, index) => {
-//       if (bulkOrder._id.toString() === bulkOrderId) {
-//         bulkOrder.orders.forEach((order, index2) => {
-//           if (order._id.toString() === orderId) {
-//             if (status) user.bulkOrders[index].orders[index2].status = status;
-//             if (delivered) {
-//               const lastDelivered =
-//                 user.bulkOrders[index].orders[index2].delivered;
-//               user.bulkOrders[index].orders[index2].delivered =
-//                 lastDelivered + delivered;
-//             }
-//           }
-//         });
-//       }
-//     });
-//     await user.save();
-//     res.send({
-//       success: true,
-//       message: 'Orders Updated Successfully',
-//     });
-//   } catch (err) {
-//     res.send({
-//       success: false,
-//       message: err.message,
-//     });
-//   }
-// };
+    await user.save();
+
+    res.send({
+      success: true,
+      message: 'deleted successfully',
+    });
+  } catch (err) {
+    res.send({
+      success: false,
+      message: err.message,
+    });
+  }
+};

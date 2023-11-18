@@ -28,17 +28,16 @@ const planningOrderSchema = new mongoose.Schema({
   quantity: {
     type: Number,
     required: true,
-  },
-  status: {
-    type: String,
-    required: true,
-    default: 'pending',
-  },
+  }
 });
 
 const planningBulkOrderSchema = new mongoose.Schema(
   {
     planningOrders: [planningOrderSchema],
+    status: {
+      type: String,
+      default: 'pending',
+    },
   },
   { timestamps: true }
 );
@@ -166,7 +165,9 @@ const userSchema = new mongoose.Schema(
       required: true,
     },
     bulkOrders: [bulkOrderSchema],
-    planningBulkOrders: [planningBulkOrderSchema],
+    planningBulkOrders: {
+      type: planningBulkOrderSchema,
+    },
     inventory: [inventorySchema],
   },
   { timestamps: true }
