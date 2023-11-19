@@ -10,8 +10,10 @@ export const createPlanningOrder = async (req, res) => {
       req.body.map(async (order) => {
         const item = await Item.findById(order.itemId);
         let flag = false;
-        user.planningBulkOrders.planningOrders.forEach((x) => {
+        user.planningBulkOrders.planningOrders.forEach((x, index) => {
           if (x.itemId.toString() === order.itemId) {
+            user.planningBulkOrders.planningOrders[index].quantity +=
+              +order.quantity;
             flag = true;
           }
         });
@@ -26,6 +28,7 @@ export const createPlanningOrder = async (req, res) => {
           company: item.company,
           category: item.category,
           imageUrl: item.imageUrl,
+          price: item.price,
         };
       })
     );
@@ -115,7 +118,7 @@ export const deletePlanningOrder = async (req, res) => {
     const updatedPlanningOrders = user.planningBulkOrders.planningOrders.filter(
       (order) => order._id.toString() !== planningOrderId
     );
-    user.planningBulkOrders.planningOrders = updatePlanningOrder;
+    user.planningBulkOrders.planningOrders = updatedPlanningOrders;
 
     await user.save();
 
