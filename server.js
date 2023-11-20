@@ -8,6 +8,7 @@ import planningOrderRoutes from './routes/planningOrderRoutes.js';
 import itemRoutes from './routes/itemRoutes.js';
 import inventoryRoutes from './routes/inventoryRoutes.js';
 import notificationRoutes from './routes/notificationRoutes.js';
+import captchaRoutes from './routes/captchaRoutes.js';
 import cors from 'cors';
 
 db();
@@ -31,6 +32,7 @@ app.use('/api/planningorder', planningOrderRoutes);
 app.use('/api/item', itemRoutes);
 app.use('/api/inventory', inventoryRoutes);
 app.use('/api/notification', notificationRoutes);
+app.use('/api/captcha',captchaRoutes);
 
 app.listen(process.env.PORT, () => {
   console.log('Server running on port 8080');
