@@ -87,14 +87,19 @@ export const fetchAllPlanningOrders = async (req, res) => {
 
 export const updatePlanningOrder = async (req, res) => {
   try {
-    const { userId, updatedQuantity, planningOrderId } = req.body;
+    const { userId, updatedQuantity, planningOrderId, status } = req.body;
     const user = await User.findById(userId);
-    user.planningBulkOrders.planningOrders.forEach((order, index) => {
-      if (order._id.toString() === planningOrderId) {
-        user.planningBulkOrders.planningOrders[index].quantity =
-          updatedQuantity;
-      }
-    });
+    if (updatedQuantity && planningOrderId) {
+      user.planningBulkOrders.planningOrders.forEach((order, index) => {
+        if (order._id.toString() === planningOrderId) {
+          user.planningBulkOrders.planningOrders[index].quantity =
+            updatedQuantity;
+        }
+      });
+    }
+    if (status) {
+      user.planningBulkOrders.status = status;
+    }
     await user.save();
     res.send({
       success: true,
