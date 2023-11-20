@@ -103,7 +103,7 @@ export const updatePlanningOrder = async (req, res) => {
     await user.save();
     res.send({
       success: true,
-      message: 'Inventory item updated successfully.',
+      message: 'Planning orders updated successfully.',
       planningBulkOrders: user.planningBulkOrders,
     });
   } catch (err) {
@@ -129,7 +129,7 @@ export const deletePlanningOrder = async (req, res) => {
 
     res.send({
       success: true,
-      message: 'deleted successfully',
+      message: 'Planning order deleted successfully',
     });
   } catch (err) {
     res.send({
