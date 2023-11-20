@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
 const itemSchema = new mongoose.Schema({
   name: {
@@ -17,19 +17,20 @@ const itemSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  price :{
-    type : Number,
-    required : true
-  },
-  minValue : {
+  price: {
     type: Number,
     required: true,
-    default:0
+    default: 0,
+  },
+  minValue: {
+    type: Number,
+    required: true,
+    default: 0,
   },
   maxValue: {
-    type : Number,
-    required : true,
-    default : 100
+    type: Number,
+    required: true,
+    default: 100,
   },
   imageUrl: {
     type: String,
@@ -37,5 +38,5 @@ const itemSchema = new mongoose.Schema({
   },
 });
 
-const Item = mongoose.model("items", itemSchema);
+const Item = mongoose.model('items', itemSchema);
 export default Item;
