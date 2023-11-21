@@ -1,6 +1,14 @@
-import Item from '../models/itemModel.js';
-import User from '../models/userModel.js';
-import transporter from '../config/mailerConfig.js';
+import Item from "../models/itemModel.js";
+import User from "../models/userModel.js";
+import transporter from "../config/mailerConfig.js";
+import path from "path";
+import { fileURLToPath } from "url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+const htmlFilePath = path.join(__dirname, "tab.html");
+console.log(htmlFilePath);
 
 export const createOrder = async (req, res) => {
   try {
@@ -11,7 +19,7 @@ export const createOrder = async (req, res) => {
         const item = await Item.findById(order.itemId);
         return {
           ...order,
-          masterPassword: order.masterPassword ? order.masterPassword : 'none',
+          masterPassword: order.masterPassword ? order.masterPassword : "none",
           name: item.name,
           description: item.description,
           company: item.company,
@@ -21,26 +29,82 @@ export const createOrder = async (req, res) => {
       })
     );
     user.bulkOrders.push({ orders: bulkOrder });
-    
-    // const mailOptions = {
-    //   from: "malhargamezone@gmail.com", // Sender's email address
-    //   to: "malhargamezone@gmail.com", // Recipient's email address
-    //   subject: "Your order details.",
-    //   html: { path : "../models/table.html"},
-    // };
-
-    // const info = await transporter.sendMail(mailOptions, (error, info) => {
-    //   if (error) {
-    //     console.error("Error sending email:", error);
-    //   } else {
-    //     console.log("Email sent:", info.response);
-    //   }
-    // });
-
     await user.save();
+
+    //Mail code ......................................
+
+    const lastOrders = user.bulkOrders[user.bulkOrders.length - 1].orders; //getting most recently placed order from bulkorders
+    const createdAt = user.bulkOrders?.[user.bulkOrders.length - 1]?.createdAt; //getting time stamp from most recent order from bulkorders
+    const date = new Date(createdAt).toLocaleDateString();
+    const time = new Date(createdAt).toLocaleTimeString();
+
+    const dynamicData = {
+      username: user.name,
+      email: user.email,
+      orders: lastOrders.map((order) => ({
+        product: order.name,
+        quantity: order.quantity,
+      })),
+    };
+
+    // Build HTML content with dynamic data
+    const htmlContent = `<html>
+
+    <body>
+      <h3 style="color: red;">Order Details</h3>
+      <p>Name: ${dynamicData.username},</p>
+      <p>Email: ${dynamicData.email},</p>
+      <p>Date: ${date},</p>
+      <p>Time: ${time},</p>    
+      <table style="border-collapse: collapse; width: 80%; margin-top: 10px;">
+        <thead>
+          <tr style="background-color: #a5d6a7;">
+            <th style="border: 1px solid #dddddd; padding: 8px; text-align: left; width: 20%;">Product Name</th>
+            <th style="border: 1px solid #dddddd; padding: 8px; text-align: left; width: 20%;">Quantity</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${dynamicData.orders
+            .map(
+              (order, index) => `
+            <tr style="background-color: ${
+              index % 2 === 0 ? "#ffffff" : "#e6f7e1"
+            };">
+              <td style="border: 1px solid #dddddd; padding: 8px;">${
+                order.product
+              }</td>
+              <td style="border: 1px solid #dddddd; padding: 8px;">${
+                order.quantity
+              }</td>
+            </tr>
+          `
+            )
+            .join("")}
+        </tbody>
+      </table>
+    </body>
+    
+    </html>
+    `;
+
+    console.log(htmlContent);
+    const mailOptions = {
+      from: "malhargamezone@gmail.com", // Sender's email address
+      to: "bhavypjala3103@gmail.com ", // Recipient's email address
+      subject: "Your order details.",
+      html: htmlContent,
+    };
+
+    const info = await transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        console.error("Error sending email:", error);
+      } else {
+        console.log("Email sent:", info.response);
+      }
+    });
     res.send({
       success: true,
-      message: 'Order created successfully',
+      message: "Order created successfully",
     });
   } catch (err) {
     res.send({
@@ -56,7 +120,7 @@ export const fetchAllOrders = async (req, res) => {
     const user = await User.findById(userId);
     res.send({
       success: true,
-      message: 'Fetched orders successfully',
+      message: "Fetched orders successfully",
       bulkOrders: user.bulkOrders,
     });
   } catch (err) {
@@ -78,7 +142,7 @@ export const updateAllOrders = async (req, res) => {
     await user.save();
     res.send({
       success: true,
-      message: 'Orders Updated Successfully',
+      message: "Orders Updated Successfully",
     });
   } catch (err) {
     res.send({
@@ -110,7 +174,7 @@ export const updateBulkOrder = async (req, res) => {
     await user.save();
     res.send({
       success: true,
-      message: 'Orders Updated Successfully',
+      message: "Orders Updated Successfully",
     });
   } catch (err) {
     res.send({
@@ -144,7 +208,7 @@ export const updateSingleOrder = async (req, res) => {
     await user.save();
     res.send({
       success: true,
-      message: 'Orders Updated Successfully',
+      message: "Orders Updated Successfully",
     });
   } catch (err) {
     res.send({
