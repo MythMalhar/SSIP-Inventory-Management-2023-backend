@@ -5,7 +5,7 @@ export const generateCaptcha = async (req, res) => {
     length: 5, // number length
     size: {
       // output size
-      width: 190,
+      width: 200,
       height: 100,
     },
   });
