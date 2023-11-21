@@ -87,7 +87,7 @@ export const fetchAllPlanningOrders = async (req, res) => {
 
 export const updatePlanningOrder = async (req, res) => {
   try {
-    const { userId, updatedQuantity, planningOrderId, status, user_id } =
+    let { userId, updatedQuantity, planningOrderId, status, user_id } =
       req.body;
     if (user_id) userId = user_id;
     const user = await User.findById(userId);
