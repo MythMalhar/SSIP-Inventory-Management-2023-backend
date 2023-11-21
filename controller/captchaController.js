@@ -5,8 +5,8 @@ export const generateCaptcha = async (req, res) => {
     length: 5, // number length
     size: {
       // output size
-      width: 450,
-      height: 200,
+      width: 190,
+      height: 100,
     },
   });
   await captcha.toBase64(async (err, base64) => {
