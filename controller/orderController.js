@@ -154,13 +154,17 @@ export const updateAllOrders = async (req, res) => {
 
 export const updateBulkOrder = async (req, res) => {
   try {
+    console.log(123);
     const { user_id, status, delivered } = req.body;
     const userId = user_id;
     const { bulkOrderId } = req.params;
     const user = await User.findById(userId);
+    console.log(user);
+    let orderForMail;
     user.bulkOrders.forEach((bulkOrder, index) => {
       if (bulkOrder._id.toString() === bulkOrderId) {
         bulkOrder.orders.forEach((order, index2) => {
+          // orderForMail = ;
           if (status) user.bulkOrders[index].orders[index2].status = status;
           if (delivered) {
             const lastDelivered =
@@ -171,7 +175,56 @@ export const updateBulkOrder = async (req, res) => {
         });
       }
     });
+    console.log(orderForMail);
+    console.log("before save");
     await user.save();
+    console.log("after save");
+
+    //Mail code..........................................
+    const dynamicData = {
+      username: user.name,
+      email: user.email,
+      Status: status,
+    };
+
+    console.log("after dynamic data");
+
+    const htmlContent = `
+<html>
+  <body>
+    <h3 style="color: red;">Order Status</h3>
+    <p>Name: ${dynamicData.username},</p>
+    <p>Email: ${dynamicData.email},</p>
+    <p>Your following order status is : ${dynamicData.Status},</p>
+    <table style="border-collapse: collapse; width: 80%; margin-top: 10px;">
+      <thead>
+        <tr style="background-color: #a5d6a7;">
+          <th style="border: 1px solid #dddddd; padding: 8px; text-align: left; width: 20%;">Product Name</th>
+          <th style="border: 1px solid #dddddd; padding: 8px; text-align: left; width: 20%;">Quantity</th>
+        </tr>
+      </thead>
+  </body>
+</html>
+`;
+
+    console.log("after htmlContent");
+    console.log("after htmlContent");
+    const mailOptions = {
+      from: "malhargamezone@gmail.com", // Sender's email address
+      to: "bhavypjala3103@gmail.com ", // Recipient's email address
+      subject: "Status of your order in inventory Management",
+      // html: htmlContent,
+      text: "your order accepted",
+    };
+
+    const info = await transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        console.error("Error sending email:", error);
+      } else {
+        console.log("Email sent:", info.response);
+      }
+    });
+
     res.send({
       success: true,
       message: "Orders Updated Successfully",
