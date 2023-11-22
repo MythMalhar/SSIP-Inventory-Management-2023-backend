@@ -16,6 +16,7 @@ const itemSchema = new mongoose.Schema({
   category: {
     type: String,
     required: true,
+    default: 'Other',
   },
   price: {
     type: Number,
@@ -35,6 +36,14 @@ const itemSchema = new mongoose.Schema({
   imageUrl: {
     type: String,
     required: true,
+  },
+  status: {
+    type: String,
+    default: 'pending',
+  },
+  userId: {
+    type: String,
+    default: '',
   },
 });
 

@@ -1,11 +1,17 @@
-import { Router } from "express";
-import { addItem, getItems } from "../controller/itemController.js";
+import { Router } from 'express';
 import {
-  authMiddleware,
-  authMiddlewareAdmin,
-} from "../middlewares/authMiddleware.js";
+  addItem,
+  deleteItem,
+  getItems,
+  updateItem,
+} from '../controller/itemController.js';
+import { authMiddleware } from '../middlewares/authMiddleware.js';
 const router = Router();
 
-router.post("/", authMiddlewareAdmin, addItem).get("/", authMiddleware, getItems);
+router
+  .post('/', authMiddleware, addItem)
+  .post('/getitems', authMiddleware, getItems)
+  .put('/:itemId', authMiddleware, updateItem)
+  .delete('/:itemId', authMiddleware, deleteItem);
 
 export default router;
