@@ -2,28 +2,28 @@ import Plan from '../models/planModel.js';
 
 const millisecondsInDay = 86400000;
 
-const whichPhase = (startDateMilliseconds) => {
+const whichPhase = (startDateMilliseconds, phaseDuration) => {
   const todayDateMilliseconds = new Date().getTime();
   if (todayDateMilliseconds < startDateMilliseconds) {
     return 'not-started';
   } else if (
     todayDateMilliseconds <
-    startDateMilliseconds + 2 * millisecondsInDay
+    startDateMilliseconds + phaseDuration * millisecondsInDay
   )
     return 'employee';
   else if (
     todayDateMilliseconds <
-    startDateMilliseconds + 4 * millisecondsInDay
+    startDateMilliseconds + 2 * phaseDuration * millisecondsInDay
   ) {
     return 'sub-branch';
   } else if (
     todayDateMilliseconds <
-    startDateMilliseconds + 6 * millisecondsInDay
+    startDateMilliseconds + 3 * phaseDuration * millisecondsInDay
   ) {
     return 'branch';
   } else if (
     todayDateMilliseconds <
-    startDateMilliseconds + 8 * millisecondsInDay
+    startDateMilliseconds + 4 * phaseDuration * millisecondsInDay
   ) {
     return 'department';
   }
@@ -32,20 +32,21 @@ const whichPhase = (startDateMilliseconds) => {
 
 export const addPlan = async (req, res) => {
   try {
-    const { startDate, phaseDuration } = req.body;
-    console.log(startDate);
-    let endDate = startDate;
+    let { startDate, phaseDuration } = req.body;
+    startDate = new Date(startDate);
+    let endDate = new Date(startDate);
     endDate.setDate(endDate.getDate() + 8);
 
     const plan = new Plan({
-      startDate,
-      endDate,
+      startDate: startDate.toString(),
+      endDate: endDate.toString(),
       phaseDuration,
       phase: 'employee',
     });
+    await plan.save();
     res.send({
       success: true,
-      message: 'Item added successfully.',
+      message: 'Plan added successfully.',
     });
   } catch (err) {
     res.send({
@@ -57,22 +58,26 @@ export const addPlan = async (req, res) => {
 
 export const getRecentPlan = async (req, res) => {
   try {
-    const plan = Plan.findOne.sort({ created_at: -1 });
+    let plan = await Plan.findOne().sort({ created_at: -1 }).exec();
     if (!plan) {
       throw new Error('No plan exists');
     }
-    const { startDate, phaseDuration } = plan;
+    let { startDate, endDate, phaseDuration } = plan;
+    startDate = new Date(startDate);
+    endDate = new Date(endDate);
+
     const todayDateMilliseconds = new Date().getTime();
-    const endingDate =
-      startDate.getTime() + millisecondsInDay * phaseDuration * 4;
-    if (endingDate > todayDateMilliseconds) {
+    if (endDate.getTime() < todayDateMilliseconds) {
       return res.send({
         success: false,
         message: 'Current Plan expired',
         plan,
       });
     }
-    plan = { ...plan, phase: whichPhase(startDate.getTime()) };
+    plan = {
+      ...plan,
+      phase: whichPhase(startDate.getTime(), phaseDuration),
+    };
     res.send({
       success: true,
       message: 'Plan fetched successfully.',
