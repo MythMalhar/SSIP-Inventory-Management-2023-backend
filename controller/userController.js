@@ -62,19 +62,17 @@ export const getUsers = async (req, res) => {
   try {
     let { role, branch, subBranch, department, userId } = req.body;
     let filters = {};
-    if (role)
-      filters = { ...filters, role: new RegExp(`^${req.body.role}$`, 'i') };
-    if (branch)
-      filters = { ...filters, branch: new RegExp(`^${req.body.branch}$`, 'i') };
+    if (role) filters = { ...filters, role };
+    if (branch) filters = { ...filters, branch };
     if (subBranch)
       filters = {
         ...filters,
-        subBranch: new RegExp(`^${req.body.subBranch}$`, 'i'),
+        subBranch,
       };
     if (department)
       filters = {
         ...filters,
-        department: new RegExp(`^${req.body.department}$`, 'i'),
+        department,
       };
     const users = (await User.find(filters)).filter(
       (user) => user._id != userId
