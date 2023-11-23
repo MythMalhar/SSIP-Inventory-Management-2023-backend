@@ -1,6 +1,7 @@
-import ROLES from '../constants/ROLES.js';
-import Notification from '../models/notificationModel.js';
-import User from '../models/userModel.js';
+import ROLES from "../constants/ROLES.js";
+import Notification from "../models/notificationModel.js";
+import User from "../models/userModel.js";
+import transporter from "../config/mailerConfig.js";
 
 export const createNotification = async (req, res) => {
   try {
@@ -77,7 +78,6 @@ export const createNotification = async (req, res) => {
       receiverId = await User.findOne(filters);
       receiverId = receiverId._id;
     }
-
     const notification = new Notification({
       senderId: userId,
       receiverId,
@@ -85,7 +85,52 @@ export const createNotification = async (req, res) => {
       message,
     });
     await notification.save();
-    res.send({ success: true, message: 'Notification send successfully' });
+
+    //Code for mail............................................................
+    const notificationForMail = await Notification.find({ receiverId }).sort({
+      createdAt: -1,
+    });
+
+    const userForMail = await User.findById(receiverId);
+    const dynamicData = {
+      username: userForMail.name,
+      email: userForMail.email,
+      message: notificationForMail[0].message,
+    };
+    console.log(dynamicData.username, dynamicData.email, dynamicData.message);
+
+    // Build HTML content with dynamic data
+    const htmlContent = `
+    <html>
+    <body>
+      <h3 style="color: red;">Notification</h3>
+      <p>Name: ${dynamicData.username},</p>
+      <p>Email: ${dynamicData.email},</p>
+      <p>You got following notification : ${dynamicData.message}.</p>
+      <br><br><br><br>
+      <footer>
+          <p><b><i>**This is system generated mail.Please do not reply.</i></b></p>
+      </footer>
+    </body>
+    </html>
+    `;
+
+    const mailOptions = {
+      from: "malhargamezone@gmail.com", // Sender's email address
+      to: "bhavypjala3103@gmail.com ", // Recipient's email address
+      subject: "Your order details.",
+      html: htmlContent,
+    };
+
+    const info = await transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        console.error("Error sending email:", error);
+      } else {
+        console.log("Email sent:", info.response);
+      }
+    });
+
+    res.send({ success: true, message: "Notification send successfully" });
   } catch (err) {
     res.send({
       success: false,
@@ -102,7 +147,7 @@ export const getNotifications = async (req, res) => {
     }).sort({ createdAt: -1 });
     res.send({
       success: true,
-      message: 'Notifications fetched successfully',
+      message: "Notifications fetched successfully",
       notifications,
     });
   } catch (err) {
@@ -134,7 +179,7 @@ export const updateNotifications = async (req, res) => {
     });
     res.send({
       success: true,
-      message: 'Notifications updated successfully',
+      message: "Notifications updated successfully",
       notifications,
     });
   } catch (err) {
@@ -152,7 +197,7 @@ export const deleteNotification = async (req, res) => {
     await Notification.findOneAndDelete({ _id: notificationId });
     res.send({
       success: true,
-      message: 'Notification deleted successfully',
+      message: "Notification deleted successfully",
     });
   } catch (err) {
     res.send({

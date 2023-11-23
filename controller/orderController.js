@@ -8,7 +8,6 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const htmlFilePath = path.join(__dirname, "tab.html");
-console.log(htmlFilePath);
 
 export const createOrder = async (req, res) => {
   try {
@@ -86,8 +85,6 @@ export const createOrder = async (req, res) => {
     
     </html>
     `;
-
-    console.log(htmlContent);
     const mailOptions = {
       from: "malhargamezone@gmail.com", // Sender's email address
       to: "bhavypjala3103@gmail.com ", // Recipient's email address
@@ -206,15 +203,11 @@ export const updateBulkOrder = async (req, res) => {
   </body>
 </html>
 `;
-
-    console.log("after htmlContent");
-    console.log("after htmlContent");
     const mailOptions = {
       from: "malhargamezone@gmail.com", // Sender's email address
       to: "bhavypjala3103@gmail.com ", // Recipient's email address
       subject: "Status of your order in inventory Management",
-      // html: htmlContent,
-      text: "your order accepted",
+      html: htmlContent,
     };
 
     const info = await transporter.sendMail(mailOptions, (error, info) => {
