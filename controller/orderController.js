@@ -194,12 +194,6 @@ export const updateBulkOrder = async (req, res) => {
     <p>Email: ${dynamicData.email},</p>
     <p>Your following order status is : ${dynamicData.Status},</p>
     <table style="border-collapse: collapse; width: 80%; margin-top: 10px;">
-      <thead>
-        <tr style="background-color: #a5d6a7;">
-          <th style="border: 1px solid #dddddd; padding: 8px; text-align: left; width: 20%;">Product Name</th>
-          <th style="border: 1px solid #dddddd; padding: 8px; text-align: left; width: 20%;">Quantity</th>
-        </tr>
-      </thead>
   </body>
 </html>
 `;

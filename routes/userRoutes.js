@@ -5,6 +5,7 @@ import {
   getUsers,
   getCurrentUser,
   newPassword,
+  updateUser
 } from "../controller/userController.js";
 import {
   authMiddleware,
@@ -18,6 +19,7 @@ router
   .post("/login", loginUser)
   .post("/users", authMiddleware, getUsers)
   .post("/password", authMiddlewareAdmin, newPassword)
-  .get("/", authMiddleware, getCurrentUser);
+  .get("/", authMiddleware, getCurrentUser)
+  .put("/",authMiddleware,updateUser);
 
 export default router;
