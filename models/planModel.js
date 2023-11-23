@@ -16,7 +16,7 @@ const planSchema = new mongoose.Schema({
   phase: {
     type: String,
     required: true,
-    default: 'employee',
+    default: 'not-started',
   },
 });
 

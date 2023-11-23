@@ -3,7 +3,7 @@ import Plan from '../models/planModel.js';
 const millisecondsInDay = 86400000;
 
 const addDays = (date, addDays) => {
-  date.setDate(date.get() + addDays);
+  date.setDate(date.getDate() + addDays);
   return date;
 };
 
@@ -79,37 +79,34 @@ export const getRecentPlan = async (req, res) => {
         plan,
       });
     }
-    let updatedPlan = plan;
-    updatedPlan = {
-      ...updatedPlan,
-      phase: whichPhase(startDate.getTime(), phaseDuration),
-    };
-    const allPhases = [];
-    allPhases.push({
-      phase: 'employee',
-      startDate: addDays(startDate, 0).toString(),
-      endDate: addDays(startDate, phaseDuration).toString(),
-    });
-    allPhases.push({
-      phase: 'sub-branch',
-      startDate: addDays(startDate, phaseDuration).toString(),
-      endDate: addDays(startDate, 2 * phaseDuration).toString(),
-    });
-    allPhases.push({
-      phase: 'branch',
-      startDate: addDays(startDate, 2 * phaseDuration).toString(),
-      endDate: addDays(startDate, 3 * phaseDuration).toString(),
-    });
-    allPhases.push({
-      phase: 'department',
-      startDate: addDays(startDate, 3 * phaseDuration).toString(),
-      endDate: addDays(startDate, 4 * phaseDuration).toString(),
-    });
+    plan.phase = whichPhase(startDate.getTime(), phaseDuration);
+    await plan.save();
+    // const allPhases = [];
+    // allPhases.push({
+    //   phase: 'employee',
+    //   startDate: addDays(startDate, 0).toString(),
+    //   endDate: addDays(startDate, phaseDuration).toString(),
+    // });
+    // allPhases.push({
+    //   phase: 'sub-branch',
+    //   startDate: addDays(startDate, phaseDuration).toString(),
+    //   endDate: addDays(startDate, 2 * phaseDuration).toString(),
+    // });
+    // allPhases.push({
+    //   phase: 'branch',
+    //   startDate: addDays(startDate, 2 * phaseDuration).toString(),
+    //   endDate: addDays(startDate, 3 * phaseDuration).toString(),
+    // });
+    // allPhases.push({
+    //   phase: 'department',
+    //   startDate: addDays(startDate, 3 * phaseDuration).toString(),
+    //   endDate: addDays(startDate, 4 * phaseDuration).toString(),
+    // });
 
     res.send({
       success: true,
       message: 'Plan fetched successfully.',
-      plan: { ...updatedPlan, allPhases },
+      plan,
     });
   } catch (err) {
     res.send({
