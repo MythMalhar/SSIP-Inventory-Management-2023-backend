@@ -158,8 +158,16 @@ export const newPassword = async (req, res) => {
 };
 
 export const updateUser = async (req, res) => {
-  const { name, branch, subBranch, department, profileIcon, userId, phone } =
-    req.body;
+  const {
+    name,
+    branch,
+    subBranch,
+    department,
+    profileIcon,
+    userId,
+    phone,
+    email,
+  } = req.body;
   let filters = {};
   if (name) filters = { ...filters, name };
   if (branch) filters = { ...filters, branch };
@@ -175,6 +183,7 @@ export const updateUser = async (req, res) => {
     department: filters.department,
     profileIcon: filters.profileIcon,
     phone: filters.phone,
+    email: email,
   });
 
   await user.save();
