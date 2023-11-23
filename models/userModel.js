@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
 const planningOrderSchema = new mongoose.Schema({
   itemId: {
@@ -41,7 +41,7 @@ const planningBulkOrderSchema = new mongoose.Schema(
     planningOrders: [planningOrderSchema],
     status: {
       type: String,
-      default: "pending",
+      default: 'pending',
     },
   },
   { timestamps: true }
@@ -84,12 +84,12 @@ const orderSchema = new mongoose.Schema({
   masterPassword: {
     type: String,
     required: true,
-    default: "none",
+    default: 'none',
   },
   status: {
     type: String,
     required: true,
-    default: "pending",
+    default: 'pending',
   },
 });
 
@@ -169,6 +169,10 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    profileIcon: {
+      type: String,
+      default: '',
+    },
     bulkOrders: [bulkOrderSchema],
     planningBulkOrders: {
       type: planningBulkOrderSchema,
@@ -178,6 +182,6 @@ const userSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-const User = mongoose.model("users", userSchema);
+const User = mongoose.model('users', userSchema);
 
 export default User;
