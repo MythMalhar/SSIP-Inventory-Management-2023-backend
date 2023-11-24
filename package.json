@@ -19,8 +19,8 @@
     "express": "^4.18.2",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^7.6.3",
-    "node-captcha-generator": "^0.0.1",
-    "nodemailer": "^6.9.7"
+    "nodemailer": "^6.9.7",
+    "svg-captcha": "^1.4.0"
   },
   "devDependencies": {
     "nodemon": "^3.0.1"
