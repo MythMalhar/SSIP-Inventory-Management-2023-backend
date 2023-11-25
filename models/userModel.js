@@ -130,6 +130,16 @@ const inventorySchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
+    minValue: {
+      type: Number,
+      required: true,
+      default: 0,
+    },
+    maxValue: {
+      type: Number,
+      required: true,
+      default: 100,
+    }
   },
   { timestamps: true }
 );
