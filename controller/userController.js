@@ -145,7 +145,6 @@ export const newPassword = async (req, res) => {
         console.log("Email sent:", info.response);
       }
     });
-    // console.log(info.messageId);
     await user.save();
 
     res.send({
