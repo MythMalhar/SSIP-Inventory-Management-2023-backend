@@ -6,7 +6,7 @@ export const generateCaptcha = async (req, res) => {
     noise: 3, // Number of noise lines
     color: true, // Captcha text color
     background: "#f0f0f0", // Background color
-    width: 150, // Image width
+    width: 150, // Image width   
     height: 60, // Image height
     fontSize: 60, // Font size
 
