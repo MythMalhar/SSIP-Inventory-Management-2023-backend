@@ -34,8 +34,8 @@ export const createOrder = async (req, res) => {
 
     const lastOrders = user.bulkOrders[user.bulkOrders.length - 1].orders; //getting most recently placed order from bulkorders
     const createdAt = user.bulkOrders?.[user.bulkOrders.length - 1]?.createdAt; //getting time stamp from most recent order from bulkorders
-    const date = new Date(createdAt).toLocaleDateString();
-    const time = new Date(createdAt).toLocaleTimeString();
+    const date = new Date().toLocaleDateString();
+    const time = new Date().toLocaleTimeString();
 
     const dynamicData = {
       username: user.name,
@@ -87,7 +87,7 @@ export const createOrder = async (req, res) => {
     `;
     const mailOptions = {
       from: "malhargamezone@gmail.com", // Sender's email address
-      to: "bhavypjala3103@gmail.com ", // Recipient's email address
+      to: user.email, // Recipient's email address
       subject: "Your order details.",
       html: htmlContent,
     };
