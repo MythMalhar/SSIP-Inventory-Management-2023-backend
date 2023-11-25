@@ -26,6 +26,8 @@ export const addInventory = async (req, res) => {
           company: item.company,
           category: item.category,
           imageUrl: item.imageUrl,
+          minValue: item.minValue,
+          maxValue: item.maxValue
         };
       })
     );
