@@ -11,6 +11,7 @@ import notificationRoutes from "./routes/notificationRoutes.js";
 import captchaRoutes from "./routes/captchaRoutes.js";
 import planRoutes from "./routes/planRoutes.js";
 import cors from "cors";
+import path from "path";
 
 db();
 const app = express();
